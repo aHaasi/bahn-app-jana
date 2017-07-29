@@ -1,12 +1,12 @@
-- name: Wittenberge
-  weatherId: 2807344
-  stationId: 008010382
-  stationType: departure
-  mainStationName: Wittenberge
-
 - name: Berlin
-  weatherId: 7290254
+  weatherId: 2878102
+  stationId: 8010255
+  stationType: departure
+  mainStationName: Berlin Ostbahnhof
+  searchedTrainStations:
+
+- name: Wolfsburg
+  weatherId: 2806654
   stationId:
   stationType: arrival
-  mainStationName: Berlin Hbf
-  searchedTrainStations: Cottbus
+  mainStationName: Wolfsburg Hbf
