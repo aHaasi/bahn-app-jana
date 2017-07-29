@@ -1,0 +1,190 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+
+
+// Our variables
+$base-font-family: Helvetica, Arial, sans-serif;
+$base-font-size:   16px;
+$small-font-size:  $base-font-size * 0.875;
+$base-line-height: 1.5;
+
+$spacing-unit:     30px;
+
+$text-color:       #111;
+$background-color: #fdfdfd;
+$brand-color:      #2a7ae2;
+
+$grey-color:       #828282;
+$grey-color-light: lighten($grey-color, 40%);
+$grey-color-dark:  darken($grey-color, 25%);
+
+// Width of the content area
+$content-width:    800px;
+
+$on-palm:          600px;
+$on-laptop:        800px;
+
+$background-color: #20253D;
+$element-color1: #52C7C9;
+$element-color2: #6D70FF;
+$element-color3: #7A81AB;
+$element-color4: #DB3873;
+$element-color5: #48D1A2;
+$element-color6: #12EBA2;
+$element-color7: #FC5A4F;
+$element-color8: #FF8653;
+$element-color9: #5371A9;
+$element-color10: #007F97;
+$element-color11: #00707F;
+
+$weather-sunny: #ffc82c;
+$weather-rainy: #5371A9;
+$weather-cloudy: #529acc;
+$weather-thunder: #474768;
+$weather-snow: #9ad3d6;
+
+// Using media queries with like this:
+// @include media-query($on-palm) {
+//     .wrapper {
+//         padding-right: $spacing-unit / 2;
+//         padding-left: $spacing-unit / 2;
+//     }
+// }
+@mixin media-query($device) {
+    @media screen and (max-width: $device) {
+        @content;
+    }
+}
+
+
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import
+        "base",
+        "layout",
+        "syntax-highlighting"
+;
+
+body{
+  background-color: $background-color;
+}
+p{
+  color: white;
+  font-weight: bold;
+}
+.container{
+  padding-right: 0px;
+  padding-left: 0px;
+}
+.no-padding-left{
+padding-left: 0px;
+}
+.no-padding-right{
+padding-right: 0px;
+}
+.margin-top{
+margin-top: 20px;
+}
+.small-margin-top{
+margin-top: 10px;
+}
+.small-margin-left{
+margin-left: 10px;
+}
+.margin-bottom{
+margin-bottom: 20px;
+}
+.white-color{
+color: white;
+}
+.border-left-side{
+border-left: 1px solid;
+color: white;
+}
+.border-radius{
+border-radius: 10px;
+}
+
+//Time
+.current-date{
+font-size: 20px;
+color: $element-color11;
+}
+.current-time{
+font-size: 35px;
+color: $element-color10;
+}
+
+//Weather
+.weather-font{
+font-weight: bold;
+font-size: 30px;
+}
+.big-font{
+font-weight: bold;
+font-size: 20px;
+}
+.center-block {
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+.weather-container{
+background-color: $element-color2;
+padding: 10px;
+}
+.Berlin{
+background-color: $element-color9;
+}
+
+//Birthday
+.birthday-container{
+padding: 10px;
+background-color: $element-color8;
+}
+.currentBirthday{
+margin-top: 5px;
+}
+.birthday-people{
+color: $background-color;
+}
+
+//Train container
+.train-container{
+background-color: $element-color1;
+padding: 10px;
+}
+.train-container .train-connection{
+border-style: solid;
+margin: 5px;
+border-width: 1px;
+color: white;
+padding: 10px 5px 5px 10px;
+}
+.red-color{
+color: red;
+}
+.green-color{
+color: green;
+}
+
+//Weather background
+.weather-sunny{
+background-color: $weather-sunny;
+}
+.weather-rainy{
+background-color: $weather-rainy;
+}
+.weather-cloudy{
+background-color: $weather-cloudy;
+}
+.weather-thunder{
+background-color: $weather-thunder;
+}
+.weather-snow{
+background-color: $weather-snow;
+}

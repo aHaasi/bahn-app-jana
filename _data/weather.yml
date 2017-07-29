@@ -1,0 +1,7 @@
+api-url: http://api.openweathermap.org/data/2.5
+api-key: eb1e418cf98ab04a1bb5d5b188f2a257
+units: metrics
+Wittenberge:
+    id: 2807344
+Berlin:
+    id: 7290254
