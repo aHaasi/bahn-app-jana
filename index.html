@@ -6,7 +6,7 @@ layout: default
     $( document ).ready(function() {
         //weather
 
-        var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations;
+        var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName;
         {% for city in site.data.cities %}
           getWeather("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
           setWeatherInterval("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
@@ -17,18 +17,21 @@ layout: default
           if("departure" === "{{city.stationType}}"){
               departureStation = "{{city.mainStationName}}";
               departureStationId = "{{city.stationId}}";
-          }else{
-            arrivalStation = "{{city.mainStationName}}";
-            searchedCity = "{{city.name}}";
-            searchedTrainStations = "{{city.searchedTrainStations}}";
+          }else if("arrival" === "{{city.stationType}}"){
+              arrivalStation = "{{city.mainStationName}}";
+              searchedCity = "{{city.name}}";
+              searchedTrainStations = "{{city.searchedTrainStations}}";
+          }else if("compensationTrain" === "{{city.stationType}}"){
+              compensationTrainId = "{{city.stationId}}";
+              compensationTrainName = "{{city.mainStationName}}";
           }
         {% endfor %}
 
         getCurrentBirthday('{{site.data.birthdays.birthdays}}');
         setBirthdayInterval('{{site.data.birthdays.birthdays}}');
 
-        getCurrentTrains(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations);
-        setTrainInterval(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations);
+        getCurrentTrains(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
+        setTrainInterval(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
 
         setCurrentDateTime();
         setCurrentDateTimeInterval();
@@ -54,48 +57,10 @@ layout: default
                 <img class="small-margin-left" src="images/icons/32/002-transport-2.png"/>
               </div>
               <div class="col-md-8 no-padding-left">
-                <p><b>Zugverbindungen:</b> <span class="startStation">Berlin Ostbahnhof</span><span class="arrow small-margin-left glyphicon glyphicon-arrow-right"></span><span class="endStation small-margin-left">Wolfsburg</span></p>
+                <p><b>Zugverbindungen:</b> <span class="startStation">Berlin</span><span class="arrow small-margin-left glyphicon glyphicon-arrow-right"></span><span class="endStation small-margin-left">Wolfsburg</span></p>
               </div>
             </div>
-            <div class="train-details">
-              <div class="train-connection border-radius">
-                <div class="row">
-                  <div class="col-md-2 no-padding-right">
-                    <p><b>ICE 125</b></p>
-                  </div>
-                  <div class="col-md-1 no-padding-left">
-                    <img src="images/icons/32/003-symbol.png"/>
-                  </div>
-                  <div class="col-md-3 no-padding-left text-center">
-                    <p class="arrivalStation">Berlin Ostbahnhof</p>
-                  </div>
-                  <div class="col-md-2 no-padding-left">
-                    <img src="images/icons/32/arrows.png"/>
-                  </div>
-                  <div class="col-md-1 no-padding-left">
-                    <img src="images/icons/32/002-car.png"/>
-                  </div>
-                  <div class="col-md-3 no-padding-left text-center">
-                    <p class="departureStation">Wolfsburg</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-2 no-padding-right">
-                  </div>
-                  <div class="col-md-1 no-padding-left"></div>
-                  <div class="col-md-3 no-padding-left text-center">
-                    <p class="arrivalTime">6:31 Uhr <span class="arrivalDelay">+0</span></p>
-                  </div>
-                  <div class="col-md-2 no-padding-left">
-                  </div>
-                  <div class="col-md-1 no-padding-left">
-                  </div>
-                  <div class="col-md-3 no-padding-left text-center">
-                    <p class="departureTime">7:20 Uhr <span class="departureDelay">+0</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="train-details"></div>
           </div>
         </div>
         <div class="col-md-5 no-padding-left no-padding-right">
@@ -118,6 +83,7 @@ layout: default
       <div class="row weather">
         <!--<div class="col-md-1"></div>-->
         {% endif %}
+        {% if city.stationType != "compensationTrain" %}
         <div {% if site.data.cities.size == 1 %} class="col-md-12" {% else %} class="col-md-6 no-padding-left {% if modulo == '1' %} no-padding-right {% endif %}" {% endif %}>
           <div class="weather-container border-radius {{city.name}}">
             <div class="row">
@@ -175,6 +141,7 @@ layout: default
           </div>
 
         </div>
+        {% endif %}
       {% if modulo == '1' %}
       </div>
       {% endif %}

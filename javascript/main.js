@@ -280,7 +280,7 @@ function getBirthdayPeople(birthdayArray, searchedDate){
  * @param departureStationId
  * @param otherStations
  */
-function getCurrentTrains(departure, arrival, cityName, departureStationId, otherStations){
+function getCurrentTrains(departure, arrival, cityName, departureStationId, otherStations, compensationTrainId, compensationTrainName){
     departureStation = departure;
     arrivalStation = arrival;
     searchedCity = cityName;
@@ -295,12 +295,35 @@ function getCurrentTrains(departure, arrival, cityName, departureStationId, othe
 
     $('.train-details').empty();
     $('.train-details').append(getEmptyTrainText());
+    $('.infoContainer').remove();
 
     $.ajax({
         url: 'http://localhost/currentTrains.php?id='+departureStationId,
         success: function(data) {
-            requestTrainDetails(getTrains(data));
+            var trains = getTrains(data);
+            if(trains.length > 0){
+                requestTrainDetails(getTrains(data));
+            }else{
+                //get the other station details
+                getCurrentTrainsOfCompensationTrain(compensationTrainId, compensationTrainName);
+            }
+        }
+    });
+}
 
+function getCurrentTrainsOfCompensationTrain(compensationTrainId, compensationTrainName){
+    departureStation = compensationTrainName;
+    var infoContainer = '<div class="row infoContainer"><div class="col-md-12 no-padding-right">'+
+        '<p>Für Berlin Ostbahnhof liegen aktuell keine Daten vor</p></div></div>';
+    $('.train-container').append(infoContainer);
+
+    $.ajax({
+        url: 'http://localhost/currentTrains.php?id='+compensationTrainId,
+        success: function(data) {
+            var trains = getTrains(data);
+            if(trains.length > 0){
+                requestTrainDetails(getTrains(data));
+            }
         }
     });
 }
@@ -309,9 +332,9 @@ function getEmptyTrainText(){
     return '<div class="train-connection border-radius"><p>Aktuell liegen keine Daten über diese Zugverbindung vor</p></div>';
 }
 
-function setTrainInterval(departure, arrival, cityName, arrivalStationId){
+function setTrainInterval(departure, arrival, cityName, arrivalStationId, otherStations, compensationTrainId, compensationTrainName){
     setInterval(function() {
-        getCurrentTrains(departure, arrival, cityName, arrivalStationId);
+        getCurrentTrains(departure, arrival, cityName, arrivalStationId, otherStations, compensationTrainId, compensationTrainName);
     }, millisecondsTrains);
 }
 
@@ -337,7 +360,7 @@ function getTrains(data){
                         url: getUrlOfTrain(child.children),
                         time: getTimeOfTrain(child.children)
                     });
-                }else{
+                }else if(otherStationsArray){
                     for(var j=0; j<otherStationsArray.length; j++){
                         if(checkSearchedTrainStationIsIn(otherStationsArray[j], child.children)){
                             dataList.push({
@@ -439,6 +462,11 @@ function getTimeOfTrain(children){
  * @returns {number}
  */
 function compare(a,b) {
+    var aTime = a.time.toString();
+    var bTime = b.time.toString();
+
+    a.time = parseFloat(aTime.replace(':', '.'));
+    b.time = parseFloat(bTime.replace(':', '.'));
     if (a.time < b.time)
         return -1;
     if (a.time > b.time)

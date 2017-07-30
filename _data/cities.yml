@@ -10,3 +10,8 @@
   stationId:
   stationType: arrival
   mainStationName: Wolfsburg Hbf
+
+- name: Berlin
+  stationId: 8011160
+  stationType: compensationTrain
+  mainStationName: Berlin Hbf
