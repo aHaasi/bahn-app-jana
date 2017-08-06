@@ -8,11 +8,14 @@ layout: default
 
         var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName;
         {% for city in site.data.cities %}
-          getWeather("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
-          setWeatherInterval("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
 
-          getForecast("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
-          setForecastIntervall("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
+          if("compensationTrain" !== "{{city.stationType}}"){
+              getWeather("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
+              setWeatherInterval("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
+
+              getForecast("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
+              setForecastIntervall("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
+          }
 
           if("departure" === "{{city.stationType}}"){
               departureStation = "{{city.mainStationName}}";

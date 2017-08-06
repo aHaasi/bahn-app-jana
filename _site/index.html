@@ -35,11 +35,14 @@
 
         var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName;
         
-          getWeather("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
-          setWeatherInterval("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
 
-          getForecast("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
-          setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
+          if("compensationTrain" !== "departure"){
+              getWeather("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
+              setWeatherInterval("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
+
+              getForecast("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
+              setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
+          }
 
           if("departure" === "departure"){
               departureStation = "Berlin Ostbahnhof";
@@ -53,11 +56,14 @@
               compensationTrainName = "Berlin Ostbahnhof";
           }
         
-          getWeather("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
-          setWeatherInterval("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
 
-          getForecast("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
-          setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
+          if("compensationTrain" !== "arrival"){
+              getWeather("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
+              setWeatherInterval("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
+
+              getForecast("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
+              setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
+          }
 
           if("departure" === "arrival"){
               departureStation = "Wolfsburg Hbf";
@@ -71,11 +77,14 @@
               compensationTrainName = "Wolfsburg Hbf";
           }
         
-          getWeather("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
-          setWeatherInterval("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
 
-          getForecast("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
-          setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
+          if("compensationTrain" !== "compensationTrain"){
+              getWeather("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
+              setWeatherInterval("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
+
+              getForecast("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
+              setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
+          }
 
           if("departure" === "compensationTrain"){
               departureStation = "Berlin Hbf";
