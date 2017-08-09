@@ -57,7 +57,7 @@ layout: default
           <div class="train-container border-radius">
             <div class="row">
               <div class="col-md-2 no-padding-right">
-                <img class="small-margin-left" src="images/icons/32/002-transport-2.png"/>
+                <img class="small-margin-left" src="images/icons/24/003-transport-1.png"/>
               </div>
               <div class="col-md-8 no-padding-left">
                 <p><b>Zugverbindungen:</b> <span class="startStation">Berlin</span><span class="arrow small-margin-left glyphicon glyphicon-arrow-right"></span><span class="endStation small-margin-left">Wolfsburg</span></p>
@@ -70,10 +70,35 @@ layout: default
           <div class="border-radius birthday-container">
             <div class="row">
               <div class="col-md-2">
-                <img class="small-margin-left" src="images/icons/32/001-present.png"/>
+                <img class="small-margin-left" src="images/icons/24/001-present.png"/>
               </div>
               <div class="col-md-8">
                 <p class="currentBirthday"><span class="birthday-start-text"></span><span class="birthday-people"></span><span class="birthday-end-text"></span></p>
+              </div>
+            </div>
+          </div>
+          <div class="border-radius todo-container margin-top">
+            <div class="row">
+              <div class="col-md-2">
+                <img class="small-margin-left" src="images/icons/24/checklist.png"/>
+              </div>
+              <div class="col-md-8">
+                <p>Heutigen ToDos</p>
+              </div>
+            </div>
+            <div class="todo-container-details">
+              <div class="row todos">
+                <div class="col-md-12">
+                  <p>Test</p>
+                  <ul>
+                    <li>
+                      <p>Test</p>
+                    </li>
+                    <li>
+                     <p>Test2</p>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -94,7 +119,7 @@ layout: default
                 <p><b>{{city.name}}</b></p>
                 <div class="row">
                   <div class="col-md-5">
-                    <img class="center-block weatherCurrentImg" src="images/icons/128/007-weather-1.png"/>
+                    <img class="center-block weatherCurrentImg" src="images/icons/64/007-weather-1.png"/>
                   </div>
                   <div class="col-md-4">
                     <p class="text-left weather-font currentTemp"/>
@@ -110,30 +135,30 @@ layout: default
                 </div>
               </div>
               <div class="col-md-4 border-left-side">
-                <div class="row">
+                <div class="row weather-forecast-line">
                   <div class="col-md-5">
                     <p>Morgen</p>
-                    <img class="weatherTomorrowImg" src="images/icons/32/01d.png"/>
+                    <img class="weatherTomorrowImg" src="images/icons/24/01d.png"/>
                   </div>
-                  <div class="col-md-7 pull-down">
+                  <div class="col-md-7 weather-forecast-pull-down">
                     <p><span class="weatherTomorrowTempMin"></span><span class="weatherTomorrowTempMax"></span></p>
                   </div>
                 </div>
                 <hr class="small-margin-top">
-                <div class="row">
+                <div class="row weather-forecast-line">
                   <div class="col-md-5">
                     <p class="weatherIn2DaysDate"></p>
-                    <img class="weatherIn2DaysImg" src="images/icons/32/01d.png"/>
+                    <img class="weatherIn2DaysImg" src="images/icons/24/01d.png"/>
                   </div>
                   <div class="col-md-7 pull-down">
                     <p><span class="weatherIn2DaysTempMin"></span><span class="weatherIn2DaysTempMax"></span></p>
                   </div>
                 </div>
                 <hr class="small-margin-top">
-                <div class="row">
+                <div class="row weather-forecast-line">
                   <div class="col-md-5">
                     <p class="weatherIn3DaysDate"></p>
-                    <img class="weatherIn3DaysImg" src="images/icons/32/01d.png"/>
+                    <img class="weatherIn3DaysImg" src="images/icons/24/01d.png"/>
                   </div>
                   <div class="col-md-7 pull-down">
                     <p><span class="weatherIn3DaysTempMin"></span><span class="weatherIn3DaysTempMax"></span></p>

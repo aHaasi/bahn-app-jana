@@ -199,8 +199,20 @@ function getWeatherCls(en){
 function getCurrentBirthday(birthdays){
     var birthdayArray = getBirthdayArray(birthdays);
     var today = new Date();
-    var todayISO = today.toISOString();
-    var todayDate = todayISO.substring(0, todayISO.indexOf('T'));
+
+    var day = today.getDate();
+    var month = today.getMonth()+1; //January is 0!
+    var year = today.getFullYear();
+
+    if(day<10) {
+        day = '0'+day
+    }
+
+    if(month<10) {
+        month = '0'+month
+    }
+
+    var todayDate = year + '-' + month + '-' + day;
     var yearOfToday = today.getUTCFullYear();
     var people = getBirthdayPeople(birthdayArray, todayDate);
     if(people.length > 1){
@@ -468,10 +480,12 @@ function compare(a,b) {
 
     a.time = parseFloat(aTime.replace(':', '.'));
     b.time = parseFloat(bTime.replace(':', '.'));
-    if (a.time < b.time)
+    if (a.time < b.time){
         return -1;
-    if (a.time > b.time)
+    }
+    if (a.time > b.time){
         return 1;
+    }
     return 0;
 }
 
@@ -484,6 +498,7 @@ function requestTrainDetails(trains){
     if(trains.length === 0){
         $('.train-details').append(getEmptyTrainText());
     }
+    var trainDetailsArray = [];
     for(var i=0; i<trains.length; i++){
         var sendData = trains[i];
 
@@ -494,31 +509,53 @@ function requestTrainDetails(trains){
             dataType  : 'json',
             success   : function(data) {
                 var htmlElem = data.html;
-                var start = htmlElem.indexOf('<table class="result stboard train"');
-                var end = htmlElem.indexOf('</table>', htmlElem.indexOf('<table class="result stboard train"'));
-                var trainDetails = null;
-                if(start > -1 && end >-1){
-                    var tableOfResult = htmlElem.substring(start, end);
-                    var htmlObject = $.parseHTML(tableOfResult);
-                    var children = htmlObject[0].children[0].children;
-                    if(children){
-                        var startStation = getDataOfStation(departureStation, children, true);
-                        var endStation = getDataOfStation(arrivalStation, children, false);
-                        if(endStation === null){
-                            endStation = getDataOfStation(searchedCity, children, false);
+                if(htmlElem){
+                    var start = htmlElem.indexOf('<table class="result stboard train"');
+                    var end = htmlElem.indexOf('</table>', htmlElem.indexOf('<table class="result stboard train"'));
+                    var trainDetails = null;
+                    if(start > -1 && end >-1){
+                        var tableOfResult = htmlElem.substring(start, end);
+                        var htmlObject = $.parseHTML(tableOfResult);
+                        var children = htmlObject[0].children[0].children;
+                        if(children){
+                            var startStation = getDataOfStation(departureStation, children, true);
+                            var endStation = getDataOfStation(arrivalStation, children, false);
+                            if(endStation === null){
+                                endStation = getDataOfStation(searchedCity, children, false);
+                            }
+                            trainDetails = {
+                                id: data.id,
+                                startStation: startStation,
+                                endStation: endStation
+                            };
+                            if(!checkIfTrainExists(trainDetailsArray, trainDetails)){
+                                appendTrainDataToContainer(trainDetails);
+                            }
+                            trainDetailsArray.push(trainDetails);
                         }
-                        trainDetails = {
-                            id: data.id,
-                            startStation: startStation,
-                            endStation: endStation
-                        };
-                        appendTrainDataToContainer(trainDetails);
-                        //todo add trains to array and check if trains exists (endStation and arrival time is the same)
                     }
                 }
             }
         });
     }
+}
+
+/**
+ * Check if the train exists as information. Return true if trains is in array.
+ * @param trainArray
+ * @param trainDetails
+ * @returns {boolean}
+ */
+function checkIfTrainExists(trainArray, trainDetails){
+    for(var i=0; i<trainArray.length; i++){
+        var train = trainArray[i];
+        if(train.endStation.time === trainDetails.endStation.time && train.startStation.station === trainDetails.startStation.station){
+            //we have the same train
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -621,10 +658,10 @@ function getTrainConnectionContainer(trainData){
     }
 
     var container = '<div class="train-connection border-radius"><div class="row"><div class="col-md-2 no-padding-right">'+
-        '<p><b>' + trainData.id + '</b></p></div><div class="col-md-1 no-padding-left"><img src="images/icons/32/003-symbol.png"/>'+
+        '<p><b>' + trainData.id + '</b></p></div><div class="col-md-1 no-padding-left"><img src="images/icons/24/003-symbol.png"/>'+
         '</div><div class="col-md-3 no-padding-left text-center"><p>'+ trainData.startStation.station +'</p>'+
         '</div><div class="col-md-2 no-padding-left"><img src="images/icons/32/arrows.png"/></div>' +
-        '<div class="col-md-1 no-padding-left"><img src="images/icons/32/002-car.png"/></div>' +
+        '<div class="col-md-1 no-padding-left"><img src="images/icons/24/002-car.png"/></div>' +
         '<div class="col-md-3 no-padding-left text-center"><p>'+ trainData.endStation.station +'</p></div></div>'+
         '<div class="row"><div class="col-md-2 no-padding-right"> </div><div class="col-md-1 no-padding-left"></div>'+
         '<div class="col-md-3 no-padding-left text-center"><p>'+ trainData.startStation.time +' Uhr ' + startStationDelay + '</p>' +
@@ -650,10 +687,259 @@ function getColorOfDelay(delay){
     return 'green-color';
 }
 
+function trelloLogin(){
+    var authenticationSuccess = function() {
+        console.log('Successful authentication');
+        getListsOfBoard('5965f1f9bd7eae62b37e2ccb');
+    };
+
+    var authenticationFailure = function() {
+        console.log('Failed authentication');
+    };
+
+    window.Trello.authorize({
+        type: 'popup',
+        name: 'Getting Started Application',
+        scope: {
+            read: 'true',
+            write: 'true' },
+        expiration: 'never',
+        success: authenticationSuccess,
+        error: authenticationFailure
+    });
+}
+
+function getListsOfBoard(id){
+    //'5965f1f9bd7eae62b37e2ccb'
+    var success = function (data) {
+        //load the lists of the board
+        getCardsOfLists(data.lists);
+    };
+
+    window.Trello.boards.get(id, {fields: ['id', 'name'], lists: 'open', list_fields: ['id', 'name']}, success);
+}
+
+/**
+ * Request the cards of a list.
+ * @param lists
+ */
+function getCardsOfLists(lists){
+    var cardList = [];
+
+    for(var i=0; i<lists.length; i++){
+        var list = lists[i];
+        cardList.push({
+            listId: list.id,
+            listName: list.name,
+            wasFilled: false,
+            cards: []
+        });
+
+        (function(listId){
+            var success = function (data) {
+                addCardsToList(cardList, listId, data);
+                if(checkAllWasFilled(cardList)){
+                    //all cards was filled
+                    //search cards with due day today
+                    getCardsDueToday(cardList);
+                }
+
+            };
+            window.Trello.get('/lists/'+ list.id + '/cards', {fields: ['id', 'name', 'badges', 'idMembers', 'idChecklists', 'idList']}, success);
+
+        })(list.id);
+    }
+}
+
+/**
+ * Add the card to the list.
+ * @param cardList
+ * @param listId
+ * @param items
+ */
+function addCardsToList(cardList, listId, items){
+    for(var i=0; i<cardList.length; i++){
+        var cardListItem = cardList[i];
+        if(cardListItem.listId === listId){
+            cardListItem.wasFilled = true;
+            for(var j=0; j<items.length; j++){
+                cardListItem.cards.push(items[j]);
+            }
+        }
+    }
+}
+
+/**
+ * Check if the card list was filled with the cards.
+ * @param cardList
+ * @returns {boolean}
+ */
+function checkAllWasFilled(cardList){
+    var wasFilled = true;
+    for(var i=0; i<cardList.length; i++){
+        wasFilled = cardList[i].wasFilled && wasFilled;
+    }
+    return wasFilled;
+}
+
+/**
+ * Get all the cards with due date is today.
+ * @param cardList
+ */
+function getCardsDueToday(cardList){
+    var cardListToday = [];
+    var today = new Date();
+    var checkListWasInCard = false;
+
+    for(var i=0; i<cardList.length; i++){
+        var cardItem = cardList[i];
+        var cards = cardItem.cards;
+
+        for(var j=0; j<cards.length; j++){
+            var card = cards[j];
+            if(card.badges.due!== null){
+                var cardDay = new Date(card.badges.due);
+                if(today.toDateString() === cardDay.toDateString()){
+                    //add to list
+                    addTodayCardToList(cardListToday, card, cardItem.listId, cardItem.listName);
+                    if(card.idChecklists && card.idChecklists.length > 0){
+                        //request the checklists
+                        getCheckListOfCard(card, cardListToday);
+                        checkListWasInCard = true;
+                    }
+                }
+            }
+        }
+    }
+
+    if(!checkListWasInCard){
+        //we have no checklist and can insert the cards to index html
+        //if we have checklist we have to request the list and insert after request
+        addTodoContainer(cardListToday);
+    }
+
+}
+
+/**
+ * Add a card to a list of all cards today.
+ * @param list
+ * @param card
+ * @param listId
+ * @param listName
+ */
+function addTodayCardToList(list, card, listId, listName){
+    if(list.length > 0){
+        for(var i=0; i<list.length; i++){
+            var currentList = list[i];
+            if(currentList.id === listId){
+                currentList.cards.push(card);
+            }else if(i== list.length -1){
+                list.push({
+                    id: listId,
+                    name: listName,
+                    cards: [card]
+                });
+            }
+        }
+    }else{
+        list.push({
+            id: listId,
+            name: listName,
+            cards: [card]
+        });
+    }
+}
+
+function getCheckListOfCard(card, cardListToday){
+    if(!card.checkLists || card.checkLists === null){
+        card.checkList = [];
+    }
+    card.checkListWasFilled = false;
+
+    var checkLists = card.idChecklists;
+    for(var i=0; i<checkLists.length; i++){
+        var checkListId = checkLists[i];
+
+        (function(checkListId, cardItemIndex, cardList){
+            var success = function (data) {
+                card.checkList.push(data);
+
+                if(cardItemIndex === checkLists.length -1 ){
+                    card.checkListWasFilled = true;
+                }
+                console.log('---was filled completely', wasCardFilledWithChecklist(cardList), cardList);
+                if(wasCardFilledWithChecklist(cardList) && cardItemIndex === checkLists.length -1){
+                    //it was the last card and last checklist -> render it in index html
+                    addTodoContainer(cardList);
+                }
+            };
+            window.Trello.checklists.get(checkListId, {fields: ['id', 'name']}, success);
+
+        })(checkListId, i, cardListToday);
+    }
+}
+
+function wasCardFilledWithChecklist(cardListToday){
+    var wasFilledConpletely = true;
+    for(var i=0; i<cardListToday.length; i++){
+        var cardItem = cardListToday[i];
+        var cards = cardItem.cards;
+
+        for(var j=0; j<cards.length; j++){
+            var card = cards[j];
+            wasFilledConpletely = wasFilledConpletely && card.checkListWasFilled;
+        }
+    }
+    return wasFilledConpletely;
+}
+
+function addTodoContainer(cardListToday){
+    $('.todo-container-details').empty();
+
+    if(cardListToday.length === 0){
+        var emptyContainer = '<div class="row todos"><p>Heute gibt es keine ToDos</p></div>';
+        $('.todo-container-details').append(emptyContainer);
+    }else{
+        for(var i=0; i<cardListToday.length; i++){
+            var cards = cardListToday[i].cards;
+            for(var j=0; j<cards.length; j++){
+                var card = cards[j];
+                var checkListContainer = '';
+                if(card.checkList && card.checkList.length > 0){
+                    checkListContainer = getCheckListsAsContainer(card.checkList);
+
+                }
+                var container = '<div class="row todos"><div class="col-md-12"<p><b>'+ card.name + ' (' + cardListToday[i].name+ ')</b></p>'+ checkListContainer + '</div></div>';
+                $('.todo-container-details').append(container);
+            }
+        }
+    }
+
+}
+
+function getCheckListsAsContainer(checkLists){
+    var containerList = '<ul>';
+    for(var i=0; i<checkLists.length; i++){
+        var checkList = checkLists[i];
+        var checkItems = checkList.checkItems;
+        for(var j=0; j<checkItems.length; j++){
+            var item = checkItems[j];
+            if(item.state === 'incomplete'){
+                containerList += '<li> <p>'+ item.name +'</p> </li>';
+            }
+
+        }
+    }
+    containerList += '</ul>';
+    return containerList;
+}
+
 $( document ).ready(function() {
     $('.pull-down').each(function() {
         var $this=$(this);
         $this.css('margin-top', $this.parent().height()-$this.height())
     });
+
+    trelloLogin();
 
 });

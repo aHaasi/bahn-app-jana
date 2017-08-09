@@ -7,7 +7,7 @@
 
 // Our variables
 $base-font-family: Helvetica, Arial, sans-serif;
-$base-font-size:   16px;
+$base-font-size:   14px;
 $small-font-size:  $base-font-size * 0.875;
 $base-line-height: 1.5;
 
@@ -40,6 +40,16 @@ $element-color9: #5371A9;
 $element-color10: #007F97;
 $element-color11: #00707F;
 
+$element-color12: #383838;
+$element-color13: #0f5259;
+$element-color14: #b1301f;
+$element-color15: #5f8b95;
+$element-color16: #a25241;
+$element-color17: #663129;
+$element-color18: #f86a0e;
+$element-color19: #9b59b5;
+$element-color20: #436cb2;
+
 $weather-sunny: #ffc82c;
 $weather-rainy: #5371A9;
 $weather-cloudy: #529acc;
@@ -69,7 +79,7 @@ $weather-snow: #9ad3d6;
 ;
 
 body{
-  background-color: $background-color;
+  background-color: $element-color12;
 }
 p{
   color: white;
@@ -144,7 +154,7 @@ background-color: $element-color9;
 //Birthday
 .birthday-container{
 padding: 10px;
-background-color: $element-color8;
+background-color: #26c281;
 }
 .currentBirthday{
 margin-top: 5px;
@@ -187,4 +197,30 @@ background-color: $weather-thunder;
 }
 .weather-snow{
 background-color: $weather-snow;
+}
+.weather-forecast-line p{
+  margin-bottom: 5px;
+}
+.weather-forecast-pull-down{
+  margin-top: 20px;
+}
+//ToDo
+.todo-container{
+  padding: 10px;
+  background-color: #26c281;
+}
+.todo-container .todos{
+  border-style: solid;
+  margin: 5px;
+  border-width: 1px;
+  color: white;
+  padding: 10px 5px 5px 10px;
+  border-radius: 10px;
+}
+.todos p{
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+.todo-container-details ul{
+  margin-bottom: 0px;
 }

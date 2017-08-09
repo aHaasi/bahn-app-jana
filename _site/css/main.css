@@ -12,7 +12,7 @@ dl, dd, ol, ul, figure {
  */
 body {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5;
   font-weight: 300;
   color: #111;
@@ -42,7 +42,7 @@ figure > img {
   display: block; }
 
 figcaption {
-  font-size: 14px; }
+  font-size: 12.25px; }
 
 /**
  * Lists
@@ -270,7 +270,7 @@ pre {
     margin-bottom: 30px; }
 
 .post-meta {
-  font-size: 14px;
+  font-size: 12.25px;
   color: #828282; }
 
 .post-link {
@@ -449,7 +449,7 @@ pre {
     color: #099; }
 
 body {
-  background-color: #20253D; }
+  background-color: #383838; }
 
 p {
   color: white;
@@ -517,7 +517,7 @@ p {
 
 .birthday-container {
   padding: 10px;
-  background-color: #FF8653; }
+  background-color: #26c281; }
 
 .currentBirthday {
   margin-top: 5px; }
@@ -556,3 +556,28 @@ p {
 
 .weather-snow {
   background-color: #9ad3d6; }
+
+.weather-forecast-line p {
+  margin-bottom: 5px; }
+
+.weather-forecast-pull-down {
+  margin-top: 20px; }
+
+.todo-container {
+  padding: 10px;
+  background-color: #26c281; }
+
+.todo-container .todos {
+  border-style: solid;
+  margin: 5px;
+  border-width: 1px;
+  color: white;
+  padding: 10px 5px 5px 10px;
+  border-radius: 10px; }
+
+.todos p {
+  margin-bottom: 0px;
+  font-weight: bold; }
+
+.todo-container-details ul {
+  margin-bottom: 0px; }
