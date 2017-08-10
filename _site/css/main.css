@@ -526,7 +526,7 @@ p {
   color: #20253D; }
 
 .train-container {
-  background-color: #52C7C9;
+  background-color: #FF8653;
   padding: 10px; }
 
 .train-container .train-connection {
@@ -565,7 +565,7 @@ p {
 
 .todo-container {
   padding: 10px;
-  background-color: #26c281; }
+  background-color: #52C7C9; }
 
 .todo-container .todos {
   border-style: solid;

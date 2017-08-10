@@ -16,6 +16,7 @@ var millisecondsToWaitWeather = 900000;
 var millisecondsTrains = 120000;
 var millisecondsForTime = 10000;
 var millisecondsToWaitBirthday = 600000;
+var millisecondsToWaitToDos = 120000;
 var departureStation, arrivalStation, searchedCity, otherStationsArray;
 
 // For todays date;
@@ -240,6 +241,12 @@ function setBirthdayInterval(birthdays){
     setInterval(function() {
         getCurrentBirthday(birthdays);
     }, millisecondsToWaitBirthday);
+}
+
+function setToDoTimeInterval(){
+    setInterval(function() {
+        trelloLogin();
+    }, millisecondsToWaitToDos);
 }
 
 /**
@@ -867,7 +874,6 @@ function getCheckListOfCard(card, cardListToday){
                 if(cardItemIndex === checkLists.length -1 ){
                     card.checkListWasFilled = true;
                 }
-                console.log('---was filled completely', wasCardFilledWithChecklist(cardList), cardList);
                 if(wasCardFilledWithChecklist(cardList) && cardItemIndex === checkLists.length -1){
                     //it was the last card and last checklist -> render it in index html
                     addTodoContainer(cardList);
@@ -897,7 +903,7 @@ function addTodoContainer(cardListToday){
     $('.todo-container-details').empty();
 
     if(cardListToday.length === 0){
-        var emptyContainer = '<div class="row todos"><p>Heute gibt es keine ToDos</p></div>';
+        var emptyContainer = '<div class="row todos"><div class="col-md-12"><p><b>Heute gibt es keine ToDos</b></p></div></div>';
         $('.todo-container-details').append(emptyContainer);
     }else{
         for(var i=0; i<cardListToday.length; i++){
@@ -909,7 +915,7 @@ function addTodoContainer(cardListToday){
                     checkListContainer = getCheckListsAsContainer(card.checkList);
 
                 }
-                var container = '<div class="row todos"><div class="col-md-12"<p><b>'+ card.name + ' (' + cardListToday[i].name+ ')</b></p>'+ checkListContainer + '</div></div>';
+                var container = '<div class="row todos"><div class="col-md-12"><p><b>'+ card.name + ' (' + cardListToday[i].name+ ')</b></p>'+ checkListContainer + '</div></div>';
                 $('.todo-container-details').append(container);
             }
         }

@@ -165,7 +165,7 @@ color: $background-color;
 
 //Train container
 .train-container{
-background-color: $element-color1;
+background-color: $element-color8;
 padding: 10px;
 }
 .train-container .train-connection{
@@ -207,7 +207,7 @@ background-color: $weather-snow;
 //ToDo
 .todo-container{
   padding: 10px;
-  background-color: #26c281;
+  background-color: $element-color1;
 }
 .todo-container .todos{
   border-style: solid;
