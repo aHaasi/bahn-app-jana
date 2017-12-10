@@ -30,6 +30,11 @@ layout: default
           }
         {% endfor %}
 
+        {% for additionalData in site.data.additionalData %}
+          getCurrentLocalTrains('{{additionalData.stationId}}', '{{additionalData.stationsBetween}}');
+
+        {% endfor %}
+
         getCurrentBirthday('{{site.data.birthdays.birthdays}}');
         setBirthdayInterval('{{site.data.birthdays.birthdays}}');
 
@@ -99,17 +104,23 @@ layout: default
         </div>
       </div>
 
+      <div class="row weather">
+      <div class="col-md-6 no-padding-left">
+        <div class="local-train-container border-radius">
+          <p>Test</p>
+        </div>
+      </div>
+
       {% for city in site.data.cities %}
         {% capture modulo %}{{ forloop.index0 | modulo:2 }}{% endcapture %}
         {% if modulo == '0' %}
-      <div class="row weather">
         <!--<div class="col-md-1"></div>-->
         {% endif %}
         {% if city.stationType != "compensationTrain" %}
-        <div {% if site.data.cities.size == 1 %} class="col-md-12" {% else %} class="col-md-6 no-padding-left {% if modulo == '1' %} no-padding-right {% endif %}" {% endif %}>
+        <div {% if site.data.cities.size == 1 %} class="col-md-6" {% else %} class="col-md-3 no-padding-left {% if modulo == '1' %} no-padding-right {% endif %}" {% endif %}>
           <div class="weather-container border-radius {{city.name}}">
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-12">
                 <p><b>{{city.name}}</b></p>
                 <div class="row">
                   <div class="col-md-5">
@@ -119,43 +130,12 @@ layout: default
                     <p class="text-left weather-font currentTemp"/>
                   </div>
                 </div>
-                <div class="row margin-top">
+                <div class="row margin-top fixed-height">
                   <div class="col-md-4">
                     <p class="text-center"><span class="currentTempMin"></span><span class="big-font currentTempMax"></span></p>
                   </div>
                   <div class="col-md-6">
                     <p class="text-left currentWeather"/>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 border-left-side">
-                <div class="row weather-forecast-line">
-                  <div class="col-md-5">
-                    <p>Morgen</p>
-                    <img class="weatherTomorrowImg" src="images/icons/24/01d.png"/>
-                  </div>
-                  <div class="col-md-7 weather-forecast-pull-down">
-                    <p><span class="weatherTomorrowTempMin"></span><span class="weatherTomorrowTempMax"></span></p>
-                  </div>
-                </div>
-                <hr class="small-margin-top">
-                <div class="row weather-forecast-line">
-                  <div class="col-md-5">
-                    <p class="weatherIn2DaysDate"></p>
-                    <img class="weatherIn2DaysImg" src="images/icons/24/01d.png"/>
-                  </div>
-                  <div class="col-md-7 pull-down">
-                    <p><span class="weatherIn2DaysTempMin"></span><span class="weatherIn2DaysTempMax"></span></p>
-                  </div>
-                </div>
-                <hr class="small-margin-top">
-                <div class="row weather-forecast-line">
-                  <div class="col-md-5">
-                    <p class="weatherIn3DaysDate"></p>
-                    <img class="weatherIn3DaysImg" src="images/icons/24/01d.png"/>
-                  </div>
-                  <div class="col-md-7 pull-down">
-                    <p><span class="weatherIn3DaysTempMin"></span><span class="weatherIn3DaysTempMax"></span></p>
                   </div>
                 </div>
               </div>

@@ -1,0 +1,3 @@
+- name: Berlin Friedrichsfelde Ost
+  stationId: 8089059
+  stationsBetween: Lichtenberg,Friedrichstraße,Alexanderplatz

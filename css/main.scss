@@ -182,6 +182,12 @@ color: red;
 color: green;
 }
 
+//Local train container
+.local-train-container{
+  background-color: $element-color8;
+  padding: 10px;
+}
+
 //Weather background
 .weather-sunny{
 background-color: $weather-sunny;
@@ -203,6 +209,9 @@ background-color: $weather-snow;
 }
 .weather-forecast-pull-down{
   margin-top: 20px;
+}
+.fixed-height{
+  min-height: 55px;
 }
 //ToDo
 .todo-container{

@@ -292,6 +292,23 @@ function getBirthdayPeople(birthdayArray, searchedDate){
     return names;
 }
 
+function getCurrentLocalTrains(localStationId, stationsBetweenString){
+    stationsBetweenString = stationsBetweenString.replace(' ', '');
+    var stationsBetween = stationsBetweenString.split(',');
+    $.ajax({
+        url: 'http://localhost/currentTrains.php?id='+localStationId,
+        success: function(data) {
+            var trains = getLocalTrains(data, stationsBetween);
+            if(trains.length > 0){
+                //ToDo S Bahnen heraus suchen und anzeigen (mit Abfahrtzeit) (+10 min)
+                console.log('------trains', trains);
+            }else{
+                //ToDo Fehlermeldung anzeigen
+            }
+        }
+    });
+}
+
 /**
  * Get the current trains. Send request to get all trains.
  * @param departure
@@ -398,6 +415,52 @@ function getTrains(data){
 
 }
 
+function getLocalTrains(data, stationsBetween){
+    var start = data.indexOf('<table class="result stboard dep"');
+    var end = data.indexOf('</table>', data.indexOf('<table class="result stboard dep"'));
+    var dataList = [];
+    if(start > -1 && end >-1){
+        var tableOfResult = data.substring(start, end);
+        var htmlObject = $.parseHTML(tableOfResult);
+        var children = htmlObject[0].children[0].children;
+        for(var i=0; i<children.length; i++){
+            var child = children[i];
+            if(child.id.indexOf('journeyRow') > -1){
+                if(checkSearchedLocalTrainIsIn(child.children,stationsBetween)){
+                    var returnedId = encodeURI(removeReturnCharacter(getIdOfTrain(child.children)));
+                    dataList.push({
+                        id: returnedId.replace(/%20/g, ''),
+                        //url: getUrlOfTrain(child.children),
+                        time: getTimeOfTrain(child.children),
+                        delay: getDelayOfTrain(child.children),
+                        endStation: getEndstationOfTrain(child.children)
+                    });
+                }
+            }
+        }
+    }
+    return dataList.sort(compare);
+}
+
+function checkSearchedLocalTrainIsIn(children, stations){
+    var stationName = '';
+    //get the current station name
+    for(var i=0; i<children.length; i++){
+        var child = children[i];
+        if(child.className === "route"){
+            stationName = child.innerText;
+        }
+    }
+
+    for(var j=0; j<stations.length; j++){
+        if(stationName.indexOf(stations[j])> -1){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /**
  * Check if searched train station stands in children html elements.
  * @param trainStation
@@ -476,6 +539,37 @@ function getTimeOfTrain(children){
 }
 
 /**
+ * Get the current delay/ris of a train
+ * @param children
+ * @returns {null}
+ */
+function getDelayOfTrain(children){
+    for(var i=0; i<children.length; i++){
+        var child = children[i];
+        if(child.className === "ris"){
+            return child.innerHTML;
+        }
+    }
+    return null;
+}
+
+function getEndstationOfTrain(children){
+    for(var i=0; i<children.length; i++){
+        var child = children[i];
+        if(child.className === "route"){
+            var innerHtml = child.children;
+            for(var j=0; j<innerHtml.length; j++){
+                var innerHtmlChild = innerHtml[j];
+                if(innerHtmlChild.localName == 'span' && innerHtmlChild.className == 'bold'){
+                    return innerHtmlChild.innerText
+                }
+            }
+        }
+    }
+    return null;
+}
+
+/**
  * Compare the train objects by parameter time.
  * @param a
  * @param b
@@ -508,39 +602,38 @@ function requestTrainDetails(trains){
     var trainDetailsArray = [];
     for(var i=0; i<trains.length; i++){
         var sendData = trains[i];
+        sendData.departureStation = departureStation;
+        sendData.arrivalStation = arrivalStation;
+
+        //ToDo hier muss viel geändert werden, da die Daten nun anders zurück kommen
 
         $.ajax({
             type      : 'POST', //Method type
             url       : 'http://localhost/trainDetails.php', //Your form processing file URL
             data      : sendData, //Forms name
             dataType  : 'json',
-            success   : function(data) {
-                var htmlElem = data.html;
-                if(htmlElem){
-                    var start = htmlElem.indexOf('<table class="result stboard train"');
-                    var end = htmlElem.indexOf('</table>', htmlElem.indexOf('<table class="result stboard train"'));
-                    var trainDetails = null;
-                    if(start > -1 && end >-1){
-                        var tableOfResult = htmlElem.substring(start, end);
-                        var htmlObject = $.parseHTML(tableOfResult);
-                        var children = htmlObject[0].children[0].children;
-                        if(children){
-                            var startStation = getDataOfStation(departureStation, children, true);
-                            var endStation = getDataOfStation(arrivalStation, children, false);
-                            if(endStation === null){
-                                endStation = getDataOfStation(searchedCity, children, false);
-                            }
-                            trainDetails = {
-                                id: data.id,
-                                startStation: startStation,
-                                endStation: endStation
-                            };
-                            if(!checkIfTrainExists(trainDetailsArray, trainDetails)){
-                                appendTrainDataToContainer(trainDetails);
-                            }
-                            trainDetailsArray.push(trainDetails);
-                        }
+            success   : function(response) {
+                //var htmlElem = data.html;
+                if(response.success){
+                    //lösche /n aus den daten
+                    var data = response.data;
+                    var departure = data.departure.replace(/\n/g, '');
+                    var arrival = data.arrival.replace(/\n/g, '');
+                    var departureArray = departure.split(',');
+                    var arrivalArray = arrival.split(',');
+
+                    var departureInfo = getDataOfCurrentStation(departureArray);
+                    var arrivalInfo = getDataOfCurrentStation(arrivalArray);
+
+                    var trainDetails = {
+                        id: data.id,
+                        startStation: departureInfo,
+                        endStation: arrivalInfo
+                    };
+                    if(!checkIfTrainExists(trainDetailsArray, trainDetails)){
+                        appendTrainDataToContainer(trainDetails);
                     }
+                    trainDetailsArray.push(trainDetails);
                 }
             }
         });
@@ -565,6 +658,18 @@ function checkIfTrainExists(trainArray, trainDetails){
     return false;
 }
 
+function getDataOfCurrentStation(dataArray){
+    var data = {
+        station : dataArray[0],
+        time: removeDelay(dataArray[4]),
+        delay: getDelay(dataArray[4]),
+        info: dataArray[10]
+    };
+
+    return data;
+
+}
+
 /**
  * Get the data of train from html elements. Returns the data.
  * @param stationName
@@ -576,7 +681,12 @@ function getDataOfStation(stationName, children, isDeparture){
     for(var i=0; i<children.length; i++){
         var childTr = children[i];
         if(childTr.innerText.indexOf(stationName)> -1){
-            var data = {};
+            var data = {
+                station : '',
+                time: '',
+                delay: '',
+                info: ''
+            };
             for(var j=0; j<childTr.children.length; j++){
                 var info = childTr.children[j];
                 if(info.className === 'station'){
@@ -601,6 +711,37 @@ function getDataOfStation(stationName, children, isDeparture){
     return null;
 }
 
+function getDelay(time){
+    if(time.indexOf('+') > -1){
+        return time.substring(time.indexOf('+'), time.length);
+    }else if(time.indexOf('-') > -1){
+        return time.substring(time.indexOf('-'), time.length);
+    }else{
+        //check if there are another time like this: " ab 18:0118:02"
+        if(numberOfOccursInString(time, ':') > 1){
+            var onlyTime = time.replace('ab', '');
+            onlyTime = onlyTime.replace(' ', '');
+            return onlyTime.substring(onlyTime.length/2 + 1, time.length);
+        }
+
+    }
+    return null;
+}
+
+function numberOfOccursInString(str, char){
+    var occurs = 0;
+
+    var substr = str;
+    while(substr.indexOf(char) > -1){
+        if(substr.indexOf(char) > -1){
+            occurs++;
+            substr = substr.substring(substr.indexOf(char)+1, substr.length);
+        }
+    }
+
+    return occurs;
+}
+
 /**
  * Remove the delay from time.
  * @param str
@@ -611,6 +752,10 @@ function removeDelay(str){
         return str.substring(0, str.indexOf('+'));
     }else if(str.indexOf('-')>-1){
         return str.substring(0, str.indexOf('-'));
+    }else if(numberOfOccursInString(str, ':') > 1){
+        var onlyTime = str.replace('ab', '');
+        onlyTime = onlyTime.replace(' ', '');
+        return onlyTime.substring(0, onlyTime.length/2+1);
     }else{
         return str;
     }
@@ -690,6 +835,9 @@ function getColorOfDelay(delay){
                 return 'green-color';
             }
         }
+    }
+    if(delay.indexOf(':')> -1){
+        return 'red-color';
     }
     return 'green-color';
 }

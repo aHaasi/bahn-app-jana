@@ -542,6 +542,10 @@ p {
 .green-color {
   color: green; }
 
+.local-train-container {
+  background-color: #FF8653;
+  padding: 10px; }
+
 .weather-sunny {
   background-color: #ffc82c; }
 
@@ -562,6 +566,9 @@ p {
 
 .weather-forecast-pull-down {
   margin-top: 20px; }
+
+.fixed-height {
+  min-height: 55px; }
 
 .todo-container {
   padding: 10px;
