@@ -2,10 +2,18 @@
 
 ## install
 sudo apt-get install apache2
+
 sudo apt-get install php5 libapache2-mod-php5
+
 sudo apt-get install php5-curl
+
 sudo /etc/init.d/apache2 restart
+
 sudo apt-get install xscreensaver (für das Ausschalten des Bildschirmes)
+
+sudo apt-get install php-xml
+
+sudo service apache2 restart
 
 
 vim copySite.sh
