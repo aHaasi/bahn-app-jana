@@ -312,17 +312,17 @@ function getCurrentLocalTrains(localStationName, localStationId, stationsBetween
                             var trainData = {
                                 id: trains[i].id,
                                 endStation: trains[i].endStation,
-                                minutes: timeInMin
+                                minutes: timeInMin,
+                                delay: ''
                             };
                             if(trains[i].delay.length > 0){
+
                                 var delay = trains[i].delay;
                                 if(delay.indexOf('>') > -1 && delay.indexOf('</')>-1){
                                     var delayTime = delay.substring(delay.indexOf('>')+1, delay.indexOf('</'));
                                     var delayInMinutes = getDelayTimeInMinutes(delayTime);
                                     if(delayInMinutes){
                                         trainData.delay = delayInMinutes;
-                                    }else{
-                                        trainData.delay = '';
                                     }
                                 }
 
