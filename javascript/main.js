@@ -315,7 +315,17 @@ function getCurrentLocalTrains(localStationName, localStationId, stationsBetween
                                 minutes: timeInMin
                             };
                             if(trains[i].delay.length > 0){
-                                console.log('-----train', train[i]);
+                                var delay = trains[i].delay;
+                                if(delay.indexOf('>') > -1 && delay.indexOf('</')>-1){
+                                    var delayTime = delay.substring(delay.indexOf('>')+1, delay.indexOf('</'));
+                                    var delayInMinutes = getDelayTimeInMinutes(delayTime);
+                                    if(delayInMinutes){
+                                        trainData.delay = delayInMinutes;
+                                    }else{
+                                        trainData.delay = '';
+                                    }
+                                }
+
                             }
                             appendLocalTrainDataToContainer(trainData);
                             trainCounter--;
@@ -339,6 +349,20 @@ function getArrivalTimeInMinLocalTrain(trainData){
     trainDate.setHours(parseInt(splittedTime[0]));
     var diff = trainDate - currentTime;
     return Math.round(((diff % 86400000) % 3600000) / 60000);
+
+}
+
+function getDelayTimeInMinutes(delayTime){
+    var currentTime = new Date();
+    var trainDate = new Date();
+    if(delayTime.indexOf(':') > -1){
+        var splittedTime = delayTime.split(':');
+        trainDate.setMinutes(parseInt(splittedTime[1]));
+        trainDate.setHours(parseInt(splittedTime[0]));
+        var diff = trainDate - currentTime;
+        return Math.round(((diff % 86400000) % 3600000) / 60000);
+    }
+    return null;
 
 }
 
@@ -906,7 +930,7 @@ function getLocalTrainConnectionContainer(trainData){
     }**/
 
     var container = '<div class="row "><div class="col-md-6 small-margin-left"><p>' + trainData.id + ' ' + trainData.endStation + '</p></div><div class="col-md-4"><p> in '+
-    trainData.minutes + ' min</p></div></div>';
+    trainData.minutes + ' min ' + trainData.delay +'</p></div></div>';
 
     return container;
 }
