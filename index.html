@@ -31,7 +31,8 @@ layout: default
         {% endfor %}
 
         {% for additionalData in site.data.additionalData %}
-          getCurrentLocalTrains('{{additionalData.stationId}}', '{{additionalData.stationsBetween}}');
+          getCurrentLocalTrains('{{additionalData.name}}', '{{additionalData.stationId}}', '{{additionalData.stationsBetween}}', '{{additionalData.timeInFuture}}', '{{additionalData.trainCounter}}');
+          setLocalTrainInterval('{{additionalData.name}}', '{{additionalData.stationId}}', '{{additionalData.stationsBetween}}', '{{additionalData.timeInFuture}}', '{{additionalData.trainCounter}}');
 
         {% endfor %}
 
@@ -104,10 +105,19 @@ layout: default
         </div>
       </div>
 
-      <div class="row weather">
+      <div class="row">
       <div class="col-md-6 no-padding-left">
         <div class="local-train-container border-radius">
-          <p>Test</p>
+            <div class="row">
+                <div class="col-md-2 no-padding-right">
+                    <img class="small-margin-left" src="images/icons/24/004-transport.png"/>
+                </div>
+                <div class="col-md-8 no-padding-left">
+                    <p><b>S-Bahn-Verbindungen: <span class="localTrainName"></span></b></p>
+                </div>
+            </div>
+            <div class="local-train-container-content">
+            </div>
         </div>
       </div>
 

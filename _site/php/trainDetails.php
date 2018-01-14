@@ -7,32 +7,54 @@ if (empty($_POST['url'])) {
     $errors['url'] = 'Url cannot be blank';
 }
 
+if (empty($_POST['departureStation'])) {
+    $errors['departure'] = 'departureStation cannot be blank';
+}
+
+if (empty($_POST['arrivalStation'])) {
+    $errors['arrival'] = 'arrivalStation cannot be blank';
+}
+
 if (!empty($errors)) { //If errors in validation
     $form_data['success'] = false;
     $form_data['errors']  = $errors;
 }
 else { //If not, process the form, and return true on success
     $form_data['success'] = true;
-    $form_data['bla'] = true;
-
-    //$curl_handle = curl_init();
-    //curl_setopt( $curl_handle, CURLOPT_URL, $_POST['url']);
-    //curl_setopt( $curl_handle, CURLOPT_RETURNTRANSFER, true ); // Fetch the contents too
-    //$html = curl_exec( $curl_handle ); // Execute the request
-    //curl_close( $curl_handle );
 
     $html = file_get_contents($_POST['url']);
     $startIndex = strpos($html, '<table class="result stboard train');
     $endIndex = strpos($html, '</table>');
+    $requiredTable = substr($html, $startIndex, $endIndex - $startIndex);
 
-    $form_data['id'] = $_POST['id'];
+    libxml_use_internal_errors(true);
+    $DOM = new DOMDocument;
+    $DOM->loadHTML($requiredTable);
+
+    libxml_use_internal_errors(false);
+
     //$form_data['html'] = strlen($html);
-    //$form_data['html'] = substr($html, $startIndex, $endIndex);
 
-    foreach($html->find('tr') as $row) {
-   // Parse table row here
-        $time = $row->find('td',0)->plaintext;
+    $object = new stdClass();
+    $object->id = $_POST['id'];
+
+    $htmlItems= $DOM->getElementsByTagName('tr');
+
+    foreach($htmlItems as $node) {
+        $str = "";
+        $htmlItemsTd = $node->childNodes;
+        foreach ($htmlItemsTd as $element) {
+            $str .= $element->nodeValue . ", ";
+        }
+        if(strpos($str, $_POST['departureStation']) !== false){
+            $object->departure = $str;
+        }
+        if(strpos($str, $_POST['arrivalStation']) !== false){
+            $object->arrival = $str;
+        }
+
     }
+    $form_data['data'] = $object;
 
 }
 

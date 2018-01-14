@@ -14,6 +14,7 @@ var translation = [
 ];
 var millisecondsToWaitWeather = 900000;
 var millisecondsTrains = 120000;
+var millisecondsLocalTrains = 30000;
 var millisecondsForTime = 10000;
 var millisecondsToWaitBirthday = 600000;
 var millisecondsToWaitToDos = 120000;
@@ -292,21 +293,53 @@ function getBirthdayPeople(birthdayArray, searchedDate){
     return names;
 }
 
-function getCurrentLocalTrains(localStationId, stationsBetweenString){
+function getCurrentLocalTrains(localStationName, localStationId, stationsBetweenString, timeInFuture, trainCounter){
+    $('.localTrainName').text(localStationName);
     stationsBetweenString = stationsBetweenString.replace(' ', '');
     var stationsBetween = stationsBetweenString.split(',');
+    timeInFuture = parseInt(timeInFuture);
+    trainCounter = parseInt(trainCounter);
     $.ajax({
         url: 'http://localhost/currentTrains.php?id='+localStationId,
         success: function(data) {
             var trains = getLocalTrains(data, stationsBetween);
+            $('.local-train-container-content').empty();
             if(trains.length > 0){
-                //ToDo S Bahnen heraus suchen und anzeigen (mit Abfahrtzeit) (+10 min)
-                console.log('------trains', trains);
+                for(var i=0; i<trains.length; i++){
+                    if(trainCounter > 0){
+                        var timeInMin = getArrivalTimeInMinLocalTrain(trains[i]);
+                        if(timeInMin >= timeInFuture){
+                            var trainData = {
+                                id: trains[i].id,
+                                endStation: trains[i].endStation,
+                                minutes: timeInMin
+                            };
+                            if(trains[i].delay.length > 0){
+                                console.log('-----train', train[i]);
+                            }
+                            appendLocalTrainDataToContainer(trainData);
+                            trainCounter--;
+                        }
+                    }
+                }
             }else{
-                //ToDo Fehlermeldung anzeigen
+                appendLocalTrainDataToContainer(null);
             }
         }
     });
+}
+
+function getArrivalTimeInMinLocalTrain(trainData){
+    var currentTime = new Date();
+    var trainDate = new Date();
+
+    var time = trainData.time.toString();
+    var splittedTime = time.split('.');
+    trainDate.setMinutes(parseInt(splittedTime[1]));
+    trainDate.setHours(parseInt(splittedTime[0]));
+    var diff = trainDate - currentTime;
+    return Math.round(((diff % 86400000) % 3600000) / 60000);
+
 }
 
 /**
@@ -375,6 +408,12 @@ function setTrainInterval(departure, arrival, cityName, arrivalStationId, otherS
     }, millisecondsTrains);
 }
 
+function setLocalTrainInterval(localStationName, localStationId, stationsBetweenString, timeInFuture, trainCounter){
+    setInterval(function() {
+        getCurrentLocalTrains(localStationName, localStationId, stationsBetweenString, timeInFuture, trainCounter);
+    }, millisecondsLocalTrains);
+}
+
 /**
  * Filter the trains from table.
  * @param data
@@ -432,7 +471,7 @@ function getLocalTrains(data, stationsBetween){
                         id: returnedId.replace(/%20/g, ''),
                         //url: getUrlOfTrain(child.children),
                         time: getTimeOfTrain(child.children),
-                        delay: getDelayOfTrain(child.children),
+                        delay: removeReturnCharacter(getDelayOfTrain(child.children)),
                         endStation: getEndstationOfTrain(child.children)
                     });
                 }
@@ -840,6 +879,44 @@ function getColorOfDelay(delay){
         return 'red-color';
     }
     return 'green-color';
+}
+
+/**
+ * Add local train data and container to html element.
+ * @param trainData
+ */
+function appendLocalTrainDataToContainer(trainData){
+    if(trainData !== null){
+        var container = getLocalTrainConnectionContainer(trainData);
+        $('.local-train-container-content').append(container);
+    }else{
+        $('.local-train-container-content').append(getLocalTrainEmptyContainer);
+    }
+}
+
+
+function getLocalTrainConnectionContainer(trainData){
+    /**var startStationDelay = '';
+    if(trainData.startStation && trainData.startStation.delay){
+        var delayColor = getColorOfDelay(trainData.startStation.delay);
+        startStationDelay = '<span class="departureDelay '+ delayColor +'">'+ trainData.startStation.delay +'</span>';
+    }
+    var endStationDelay = '';
+    if(trainData.endStation && trainData.endStation.delay){
+        var delayColor = getColorOfDelay(trainData.endStation.delay);
+        endStationDelay = '<span class="arrivalDelay '+ delayColor +'">'+ trainData.endStation.delay +'</span>';
+    }**/
+
+    var container = '<div class="row "><div class="col-md-6 small-margin-left"><p>' + trainData.id + ' ' + trainData.endStation + '</p></div><div class="col-md-4"><p> in '+
+    trainData.minutes + ' min</p></div></div>';
+
+    return container;
+}
+
+function getLocalTrainEmptyContainer(){
+    var container = '<div class="row "><div class="col-md-12 small-margin-left"><p>Aktuell liegen keine Verbindungen vor</p></div>';
+
+    return container;
 }
 
 function trelloLogin(){

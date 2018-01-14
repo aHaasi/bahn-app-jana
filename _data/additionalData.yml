@@ -1,3 +1,5 @@
 - name: Berlin Friedrichsfelde Ost
   stationId: 8089059
-  stationsBetween: Lichtenberg,Friedrichstraße,Alexanderplatz
+  stationsBetween: Ostbahnhof,Hackescher,Friedrichstraße,Alexanderplatz,Potsdam
+  timeInFuture: 8
+  trainCounter: 4
