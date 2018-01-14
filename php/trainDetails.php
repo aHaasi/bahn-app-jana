@@ -31,7 +31,7 @@ else { //If not, process the form, and return true on success
     $DOM = new DOMDocument;
     $DOM->loadHTML($requiredTable);
 
-    libxml_use_internal_errors(false);
+    //libxml_use_internal_errors(false);
 
     //$form_data['html'] = strlen($html);
 

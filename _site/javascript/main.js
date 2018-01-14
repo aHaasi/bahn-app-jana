@@ -644,8 +644,6 @@ function requestTrainDetails(trains){
         sendData.departureStation = departureStation;
         sendData.arrivalStation = arrivalStation;
 
-        //ToDo hier muss viel geändert werden, da die Daten nun anders zurück kommen
-
         $.ajax({
             type      : 'POST', //Method type
             url       : 'http://localhost/trainDetails.php', //Your form processing file URL
