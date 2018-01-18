@@ -308,23 +308,31 @@ function getCurrentLocalTrains(localStationName, localStationId, stationsBetween
                 for(var i=0; i<trains.length; i++){
                     if(trainCounter > 0){
                         var timeInMin = getArrivalTimeInMinLocalTrain(trains[i]);
-                        if(timeInMin >= timeInFuture){
+                        var delayInMinutes = null;
+                        if(trains[i].delay.length > 0){
+                            var delay = trains[i].delay;
+                            if(delay.indexOf('>') > -1 && delay.indexOf('</')>-1){
+                                var delayTime = delay.substring(delay.indexOf('>')+1, delay.indexOf('</'));
+                                delayInMinutes = getDelayTimeInMinutes(trains[i].time.toString(), delayTime);
+                            }
+                        }
+                        if(timeInMin >= timeInFuture || (delayInMinutes !== null && timeInMin + delayInMinutes >= timeInFuture)){
                             var trainData = {
                                 id: trains[i].id,
                                 endStation: trains[i].endStation,
                                 minutes: timeInMin,
                                 delay: ''
                             };
-                            if(trains[i].delay.length > 0){
-
-                                var delay = trains[i].delay;
-                                if(delay.indexOf('>') > -1 && delay.indexOf('</')>-1){
-                                    var delayTime = delay.substring(delay.indexOf('>')+1, delay.indexOf('</'));
-                                    var delayInMinutes = getDelayTimeInMinutes(delayTime);
-                                    if(delayInMinutes){
-                                        trainData.delay = delayInMinutes;
-                                    }
+                            if(delayInMinutes !== null && (delayInMinutes > 0 || delayInMinutes <0)){
+                                var delayText = '(';
+                                if(delayInMinutes > 0){
+                                    delayText += '+ ' + delayInMinutes.toString();
+                                }else{
+                                    //negativ number don't need a sign
+                                    delayText +=  delayInMinutes.toString();
                                 }
+                                delayText += ')';
+                                trainData.delay = delayText;
 
                             }
                             appendLocalTrainDataToContainer(trainData);
@@ -352,14 +360,17 @@ function getArrivalTimeInMinLocalTrain(trainData){
 
 }
 
-function getDelayTimeInMinutes(delayTime){
-    var currentTime = new Date();
+function getDelayTimeInMinutes(time, delayTime){
+    var estimatedTime = new Date();
     var trainDate = new Date();
-    if(delayTime.indexOf(':') > -1){
-        var splittedTime = delayTime.split(':');
-        trainDate.setMinutes(parseInt(splittedTime[1]));
-        trainDate.setHours(parseInt(splittedTime[0]));
-        var diff = trainDate - currentTime;
+    if(delayTime.indexOf(':') > -1 && time.indexOf('.')>-1){
+        var splittedTimeDelay = delayTime.split(':');
+        trainDate.setMinutes(parseInt(splittedTimeDelay[1]));
+        trainDate.setHours(parseInt(splittedTimeDelay[0]));
+        var splittedTimeEstimated = time.split('.');
+        estimatedTime.setMinutes(parseInt(splittedTimeEstimated[1]));
+        estimatedTime.setHours(parseInt(splittedTimeEstimated[0]));
+        var diff = trainDate - estimatedTime;
         return Math.round(((diff % 86400000) % 3600000) / 60000);
     }
     return null;
@@ -686,15 +697,18 @@ function requestTrainDetails(trains){
                     var departureInfo = getDataOfCurrentStation(departureArray);
                     var arrivalInfo = getDataOfCurrentStation(arrivalArray);
 
-                    var trainDetails = {
-                        id: data.id,
-                        startStation: departureInfo,
-                        endStation: arrivalInfo
-                    };
-                    if(!checkIfTrainExists(trainDetailsArray, trainDetails)){
-                        appendTrainDataToContainer(trainDetails);
+                    if(departureInfo && arrivalInfo){
+                        var trainDetails = {
+                            id: data.id,
+                            startStation: departureInfo,
+                            endStation: arrivalInfo
+                        };
+                        if(!checkIfTrainExists(trainDetailsArray, trainDetails)){
+                            appendTrainDataToContainer(trainDetails);
+                        }
+                        trainDetailsArray.push(trainDetails);
                     }
-                    trainDetailsArray.push(trainDetails);
+
                 }
             }
         });
@@ -720,14 +734,28 @@ function checkIfTrainExists(trainArray, trainDetails){
 }
 
 function getDataOfCurrentStation(dataArray){
-    var data = {
-        station : dataArray[0],
-        time: removeDelay(dataArray[4]),
-        delay: getDelay(dataArray[4]),
-        info: dataArray[10]
-    };
+    if(dataArray && dataArray.length > 2){
+        var data = {};
+        if(dataArray.includes(' Halt entfällt ')){
+           //the stop will not arrive
+            data = {
+                station : dataArray[0],
+                time: '<b>Halt entfällt</b>',
+                delay: '',
+                info: dataArray[10]
+            };
+        }else{
+            data = {
+                station : dataArray[0],
+                time: removeDelay(dataArray[4]),
+                delay: getDelay(dataArray[4]),
+                info: dataArray[10]
+            };
+        }
 
-    return data;
+        return data;
+    }
+    return null;
 
 }
 
@@ -870,6 +898,19 @@ function getTrainConnectionContainer(trainData){
         endStationDelay = '<span class="arrivalDelay '+ delayColor +'">'+ trainData.endStation.delay +'</span>';
     }
 
+    var startStationText = trainData.startStation.time;
+    var endStationText = trainData.endStation.time;
+    if(startStationText.indexOf('Halt entfällt') === -1){
+        startStationText += ' Uhr ' + startStationDelay;
+    }else{
+        startStationText = '<span class="departureDelay red-color">' + startStationText + '</span>';
+    }
+    if(endStationText.indexOf('Halt entfällt') === -1){
+        endStationText += ' Uhr ' + endStationDelay;
+    }else{
+        endStationText = '<span class="departureDelay red-color">' + endStationText + '</span>';
+    }
+
     var container = '<div class="train-connection border-radius"><div class="row"><div class="col-md-2 no-padding-right">'+
         '<p><b>' + trainData.id + '</b></p></div><div class="col-md-1 no-padding-left"><img src="images/icons/24/003-symbol.png"/>'+
         '</div><div class="col-md-3 no-padding-left text-center"><p>'+ trainData.startStation.station +'</p>'+
@@ -877,9 +918,9 @@ function getTrainConnectionContainer(trainData){
         '<div class="col-md-1 no-padding-left"><img src="images/icons/24/002-car.png"/></div>' +
         '<div class="col-md-3 no-padding-left text-center"><p>'+ trainData.endStation.station +'</p></div></div>'+
         '<div class="row"><div class="col-md-2 no-padding-right"> </div><div class="col-md-1 no-padding-left"></div>'+
-        '<div class="col-md-3 no-padding-left text-center"><p>'+ trainData.startStation.time +' Uhr ' + startStationDelay + '</p>' +
+        '<div class="col-md-3 no-padding-left text-center"><p>'+ startStationText + '</p>' +
         '</div><div class="col-md-2 no-padding-left"></div><div class="col-md-1 no-padding-left"></div>' +
-        '<div class="col-md-3 no-padding-left text-center"><p>'+ trainData.endStation.time +' Uhr '+ endStationDelay + '</p>' +
+        '<div class="col-md-3 no-padding-left text-center"><p>'+ endStationText + '</p>' +
         '</div></div></div>';
 
     return container;
