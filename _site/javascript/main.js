@@ -1089,7 +1089,6 @@ function getCardsDueToday(cardList){
     for(var i=0; i<cardList.length; i++){
         var cardItem = cardList[i];
         var cards = cardItem.cards;
-
         for(var j=0; j<cards.length; j++){
             var card = cards[j];
             if(card.badges.due!== null){
@@ -1123,26 +1122,20 @@ function getCardsDueToday(cardList){
  * @param listName
  */
 function addTodayCardToList(list, card, listId, listName){
-    if(list.length > 0){
-        for(var i=0; i<list.length; i++){
-            var currentList = list[i];
-            if(currentList.id === listId){
-                currentList.cards.push(card);
-            }else if(i== list.length -1){
-                list.push({
-                    id: listId,
-                    name: listName,
-                    cards: [card]
-                });
-            }
+    for(var i=0; i<list.length; i++){
+        var currentList = list[i];
+        if(currentList.id === listId){
+            currentList.cards.push(card);
+            return;
         }
-    }else{
-        list.push({
-            id: listId,
-            name: listName,
-            cards: [card]
-        });
     }
+
+    //insert new element if that wasn't insert before
+    list.push({
+        id: listId,
+        name: listName,
+        cards: [card]
+    });
 }
 
 function getCheckListOfCard(card, cardListToday){
