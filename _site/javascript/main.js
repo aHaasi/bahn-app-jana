@@ -410,7 +410,7 @@ function getCurrentTrains(departure, arrival, cityName, departureStationId, othe
     $('.infoContainer').remove();
 
     $.ajax({
-        url: 'http://localhost/currentTrains.php?id='+departureStationId,
+        url: '/currentTrains.php?id='+departureStationId,
         success: function(data) {
             var trains = getTrains(data);
             if(trains.length > 0){
