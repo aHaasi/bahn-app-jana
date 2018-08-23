@@ -6,7 +6,7 @@ layout: default
     $( document ).ready(function() {
         //weather
 
-        var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName;
+        //var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName;
         {% for city in site.data.cities %}
 
           if("compensationTrain" !== "{{city.stationType}}"){
@@ -17,7 +17,7 @@ layout: default
               setForecastIntervall("{{site.data.weather.api-url}}", "{{site.data.weather.api-key}}", "{{city.weatherId}}", "{{city.name}}");
           }
 
-          if("departure" === "{{city.stationType}}"){
+          /**if("departure" === "{{city.stationType}}"){
               departureStation = "{{city.mainStationName}}";
               departureStationId = "{{city.stationId}}";
           }else if("arrival" === "{{city.stationType}}"){
@@ -27,7 +27,7 @@ layout: default
           }else if("compensationTrain" === "{{city.stationType}}"){
               compensationTrainId = "{{city.stationId}}";
               compensationTrainName = "{{city.mainStationName}}";
-          }
+          }**/
         {% endfor %}
 
         {% for additionalData in site.data.additionalData %}
@@ -39,8 +39,8 @@ layout: default
         getCurrentBirthday('{{site.data.birthdays.birthdays}}');
         setBirthdayInterval('{{site.data.birthdays.birthdays}}');
 
-        getCurrentTrains(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
-        setTrainInterval(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
+        //getCurrentTrains(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
+        //setTrainInterval(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
 
         setCurrentDateTime();
         setCurrentDateTimeInterval();
@@ -60,105 +60,131 @@ layout: default
           <p><span class="current-time"></span> <span class="current-date"></span></p>
         </div>
       </div>
-      <div class="row margin-bottom">
+      <div class="row">
         <div class="col-md-7 no-padding-left">
-          <div class="train-container border-radius">
-            <div class="row">
-              <div class="col-md-2 no-padding-right">
-                <img class="small-margin-left" src="images/icons/24/003-transport-1.png"/>
-              </div>
-              <div class="col-md-8 no-padding-left">
-                <p><b>Zugverbindungen:</b> <span class="startStation">Berlin</span><span class="arrow small-margin-left glyphicon glyphicon-arrow-right"></span><span class="endStation small-margin-left">Wolfsburg</span></p>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="local-train-container border-radius">
+                <div class="row">
+                  <div class="col-md-2 no-padding-right">
+                    <img class="small-margin-left" src="images/icons/24/004-transport.png"/>
+                  </div>
+                  <div class="col-md-8 no-padding-left">
+                    <p><b>S-Bahn-Verbindungen: <span class="localTrainName"></span></b></p>
+                  </div>
+                </div>
+                <div class="local-train-container-content">
+                </div>
               </div>
             </div>
-            <div class="train-details"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+
+              {% for city in site.data.cities %}
+              {% capture modulo %}{{ forloop.index0 | modulo:2 }}{% endcapture %}
+              {% if modulo == '0' %}
+              <!--<div class="col-md-1"></div>-->
+              {% endif %}
+              {% if city.stationType != "compensationTrain" %}
+                <div class="weather-container border-radius margin-top {{city.name}}">
+                  <div class="row">
+                    <div class="col-md-7">
+                      <p><b>{{city.name}}</b></p>
+                      <div class="row">
+                        <div class="col-md-5">
+                          <img class="center-block weatherCurrentImg" src="images/icons/64/007-weather-1.png"/>
+                        </div>
+                        <div class="col-md-4">
+                          <p class="text-left weather-font currentTemp"/>
+                        </div>
+                      </div>
+                      <div class="row margin-top">
+                        <div class="col-md-4">
+                          <p class="text-center"><span class="currentTempMin"></span><span class="big-font currentTempMax"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                          <p class="text-left currentWeather"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-5 border-left-side">
+                      <div class="row weather-forecast-line">
+                        <div class="col-md-5">
+                          <p>Morgen</p>
+                          <img class="weatherTomorrowImg" src="images/icons/24/01d.png"/>
+                        </div>
+                        <div class="col-md-7 weather-forecast-pull-down">
+                          <p><span class="weatherTomorrowTempMin"></span><span class="weatherTomorrowTempMax"></span></p>
+                        </div>
+                      </div>
+                      <hr class="small-margin-top">
+                      <div class="row weather-forecast-line">
+                        <div class="col-md-5">
+                          <p class="weatherIn2DaysDate"></p>
+                          <img class="weatherIn2DaysImg" src="images/icons/24/01d.png"/>
+                        </div>
+                        <div class="col-md-7 pull-down">
+                          <p><span class="weatherIn2DaysTempMin"></span><span class="weatherIn2DaysTempMax"></span></p>
+                        </div>
+                      </div>
+                      <hr class="small-margin-top">
+                      <div class="row weather-forecast-line">
+                        <div class="col-md-5">
+                          <p class="weatherIn3DaysDate"></p>
+                          <img class="weatherIn3DaysImg" src="images/icons/24/01d.png"/>
+                        </div>
+                        <div class="col-md-7 pull-down">
+                          <p><span class="weatherIn3DaysTempMin"></span><span class="weatherIn3DaysTempMax"></span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              {% endif %}
+            {% endfor %}
+            </div>
           </div>
         </div>
         <div class="col-md-5 no-padding-left no-padding-right">
-          <div class="border-radius birthday-container">
-            <div class="row">
-              <div class="col-md-2">
-                <img class="small-margin-left" src="images/icons/24/001-present.png"/>
-              </div>
-              <div class="col-md-8">
-                <p class="currentBirthday"><span class="birthday-start-text"></span><span class="birthday-people"></span><span class="birthday-end-text"></span></p>
-              </div>
-            </div>
-          </div>
-          <div class="border-radius todo-container margin-top">
-            <div class="row">
-              <div class="col-md-2">
-                <img class="small-margin-left" src="images/icons/24/checklist.png"/>
-              </div>
-              <div class="col-md-8">
-                <p>Heutigen ToDos</p>
-              </div>
-            </div>
-            <div class="todo-container-details">
-              <div class="row todos">
-                <div class="col-md-12">
-                  <p><b>Heute gibt es keine ToDos</b></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-      <div class="col-md-6 no-padding-left">
-        <div class="local-train-container border-radius">
-            <div class="row">
-                <div class="col-md-2 no-padding-right">
-                    <img class="small-margin-left" src="images/icons/24/004-transport.png"/>
-                </div>
-                <div class="col-md-8 no-padding-left">
-                    <p><b>S-Bahn-Verbindungen: <span class="localTrainName"></span></b></p>
-                </div>
-            </div>
-            <div class="local-train-container-content">
-            </div>
-        </div>
-      </div>
-
-      {% for city in site.data.cities %}
-        {% capture modulo %}{{ forloop.index0 | modulo:2 }}{% endcapture %}
-        {% if modulo == '0' %}
-        <!--<div class="col-md-1"></div>-->
-        {% endif %}
-        {% if city.stationType != "compensationTrain" %}
-        <div {% if site.data.cities.size == 1 %} class="col-md-6" {% else %} class="col-md-3 no-padding-left {% if modulo == '1' %} no-padding-right {% endif %}" {% endif %}>
-          <div class="weather-container border-radius {{city.name}}">
-            <div class="row">
-              <div class="col-md-12">
-                <p><b>{{city.name}}</b></p>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="border-radius birthday-container">
                 <div class="row">
-                  <div class="col-md-5">
-                    <img class="center-block weatherCurrentImg" src="images/icons/64/007-weather-1.png"/>
+                  <div class="col-md-2">
+                    <img class="small-margin-left" src="images/icons/24/001-present.png"/>
                   </div>
-                  <div class="col-md-4">
-                    <p class="text-left weather-font currentTemp"/>
-                  </div>
-                </div>
-                <div class="row margin-top fixed-height">
-                  <div class="col-md-4">
-                    <p class="text-center"><span class="currentTempMin"></span><span class="big-font currentTempMax"></span></p>
-                  </div>
-                  <div class="col-md-6">
-                    <p class="text-left currentWeather"/>
+                  <div class="col-md-8">
+                    <p class="currentBirthday"><span class="birthday-start-text"></span><span class="birthday-people"></span><span class="birthday-end-text"></span></p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
+          <div class="row">
+            <div class="col-md-12">
+              <div class="border-radius todo-container margin-top">
+                <div class="row">
+                  <div class="col-md-2">
+                    <img class="small-margin-left" src="images/icons/24/checklist.png"/>
+                  </div>
+                  <div class="col-md-8">
+                    <p>Heutigen ToDos</p>
+                  </div>
+                </div>
+                <div class="todo-container-details">
+                  <div class="row todos">
+                    <div class="col-md-12">
+                      <p><b>Heute gibt es keine ToDos</b></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        {% endif %}
-      {% if modulo == '1' %}
       </div>
-      {% endif %}
-      {% endfor %}
-
     </div>
     </div>
 

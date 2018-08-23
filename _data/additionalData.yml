@@ -1,5 +1,5 @@
-- name: Berlin Friedrichsfelde Ost
-  stationId: 8089059
-  stationsBetween: Ostbahnhof,Hackescher,Friedrichstraße,Alexanderplatz,Potsdam
+- name: Berlin Springfuhl
+  stationId: 8089040
+  stationsBetween: Hackescher Markt,Friedrichstraße,Alexanderplatz,Potsdam,Westkreuz
   timeInFuture: 8
   trainCounter: 4

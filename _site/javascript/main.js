@@ -71,6 +71,7 @@ function setWeatherInterval(apiUrl, apiId, id, cityName){
 function getForecast(apiUrl, apiId, id, cityName){
     $.getJSON(apiUrl + "/forecast/daily?id="+id+"&&units=metric&APPID="+apiId, function( data ) {
         var dataList = data.list;
+        var dataList = data.list;
         //current day
         var currentDay = getWeatherDates(dataList, 0);
         $("."+cityName + " .currentTempMin").text(Math.round(currentDay.temp.min) + "°");
@@ -351,8 +352,10 @@ function getArrivalTimeInMinLocalTrain(trainData){
     var currentTime = new Date();
     var trainDate = new Date();
 
-    var time = trainData.time.toString();
-    var splittedTime = time.split('.');
+    trainDate.setHours(0,0,0,0);
+
+    var time = trainData.time;
+    var splittedTime = time.split(':');
     trainDate.setMinutes(parseInt(splittedTime[1]));
     trainDate.setHours(parseInt(splittedTime[0]));
     var diff = trainDate - currentTime;
@@ -362,12 +365,16 @@ function getArrivalTimeInMinLocalTrain(trainData){
 
 function getDelayTimeInMinutes(time, delayTime){
     var estimatedTime = new Date();
+    estimatedTime.setHours(0,0,0,0);
     var trainDate = new Date();
-    if(delayTime.indexOf(':') > -1 && time.indexOf('.')>-1){
+    trainDate.setHours(0,0,0,0);
+
+    if(delayTime.indexOf(':') > -1 && time.indexOf(':')>-1){
         var splittedTimeDelay = delayTime.split(':');
         trainDate.setMinutes(parseInt(splittedTimeDelay[1]));
         trainDate.setHours(parseInt(splittedTimeDelay[0]));
-        var splittedTimeEstimated = time.split('.');
+
+        var splittedTimeEstimated = time.split(':');
         estimatedTime.setMinutes(parseInt(splittedTimeEstimated[1]));
         estimatedTime.setHours(parseInt(splittedTimeEstimated[0]));
         var diff = trainDate - estimatedTime;
@@ -513,7 +520,7 @@ function getLocalTrains(data, stationsBetween){
             }
         }
     }
-    return dataList.sort(compare);
+    return dataList.sort(compareTime);
 }
 
 function checkSearchedLocalTrainIsIn(children, stations){
@@ -659,6 +666,35 @@ function compare(a,b) {
         return -1;
     }
     if (a.time > b.time){
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * Compare the train objects by parameter time.
+ * @param a
+ * @param b
+ * @returns {number}
+ */
+function compareTime(a,b) {
+    var aTime = new Date();
+    var bTime = new Date();
+
+    var aSplitted = a.time.split(':');
+    aTime.setHours(0,0,0,0);
+    aTime.setMinutes(parseInt(aSplitted[1]));
+    aTime.setHours(parseInt(aSplitted[0]));
+
+    var bSplitted = b.time.split(':');
+    bTime.setHours(0,0,0,0);
+    bTime.setMinutes(parseInt(bSplitted[1]));
+    bTime.setHours(parseInt(bSplitted[0]));
+
+    if (aTime.getTime() < bTime.getTime()){
+        return -1;
+    }
+    if (aTime.getTime() > bTime.getTime()){
         return 1;
     }
     return 0;

@@ -33,7 +33,7 @@
     $( document ).ready(function() {
         //weather
 
-        var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName;
+        //var departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName;
         
 
           if("compensationTrain" !== "departure"){
@@ -44,7 +44,7 @@
               setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2878102", "Berlin");
           }
 
-          if("departure" === "departure"){
+          /**if("departure" === "departure"){
               departureStation = "Berlin Ostbahnhof";
               departureStationId = "8010255";
           }else if("arrival" === "departure"){
@@ -54,28 +54,7 @@
           }else if("compensationTrain" === "departure"){
               compensationTrainId = "8010255";
               compensationTrainName = "Berlin Ostbahnhof";
-          }
-        
-
-          if("compensationTrain" !== "arrival"){
-              getWeather("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
-              setWeatherInterval("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
-
-              getForecast("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
-              setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "2806654", "Wolfsburg");
-          }
-
-          if("departure" === "arrival"){
-              departureStation = "Wolfsburg Hbf";
-              departureStationId = "";
-          }else if("arrival" === "arrival"){
-              arrivalStation = "Wolfsburg Hbf";
-              searchedCity = "Wolfsburg";
-              searchedTrainStations = "";
-          }else if("compensationTrain" === "arrival"){
-              compensationTrainId = "";
-              compensationTrainName = "Wolfsburg Hbf";
-          }
+          }**/
         
 
           if("compensationTrain" !== "compensationTrain"){
@@ -86,7 +65,7 @@
               setForecastIntervall("http://api.openweathermap.org/data/2.5", "eb1e418cf98ab04a1bb5d5b188f2a257", "", "Berlin");
           }
 
-          if("departure" === "compensationTrain"){
+          /**if("departure" === "compensationTrain"){
               departureStation = "Berlin Hbf";
               departureStationId = "8011160";
           }else if("arrival" === "compensationTrain"){
@@ -96,20 +75,20 @@
           }else if("compensationTrain" === "compensationTrain"){
               compensationTrainId = "8011160";
               compensationTrainName = "Berlin Hbf";
-          }
+          }**/
         
 
         
-          getCurrentLocalTrains('Berlin Friedrichsfelde Ost', '8089059', 'Ostbahnhof,Hackescher,Friedrichstraße,Alexanderplatz,Potsdam', '8', '4');
-          setLocalTrainInterval('Berlin Friedrichsfelde Ost', '8089059', 'Ostbahnhof,Hackescher,Friedrichstraße,Alexanderplatz,Potsdam', '8', '4');
+          getCurrentLocalTrains('Berlin Springfuhl', '8089040', 'Hackescher Markt,Friedrichstraße,Alexanderplatz,Potsdam,Westkreuz', '8', '4');
+          setLocalTrainInterval('Berlin Springfuhl', '8089040', 'Hackescher Markt,Friedrichstraße,Alexanderplatz,Potsdam,Westkreuz', '8', '4');
 
         
 
         getCurrentBirthday('{#<Date: 1988-01-28 ((2447189j,0s,0n),+0s,2299161j)>=>"Tobi", #<Date: 1972-02-02 ((2441350j,0s,0n),+0s,2299161j)>=>"Jan", #<Date: 1980-02-05 ((2444275j,0s,0n),+0s,2299161j)>=>"Astrid", #<Date: 1984-02-07 ((2445738j,0s,0n),+0s,2299161j)>=>"Ben", #<Date: 1956-02-08 ((2435512j,0s,0n),+0s,2299161j)>=>"Bärbel", #<Date: 1991-03-01 ((2448317j,0s,0n),+0s,2299161j)>=>"Stefan G.", #<Date: 1958-03-07 ((2436270j,0s,0n),+0s,2299161j)>=>"Ina (Papa)", #<Date: 1958-03-12 ((2436275j,0s,0n),+0s,2299161j)>=>"Anton", #<Date: 1987-03-19 ((2446874j,0s,0n),+0s,2299161j)>=>"Nick", #<Date: 1988-03-28 ((2447249j,0s,0n),+0s,2299161j)>=>"Sven Peter", #<Date: 1989-04-09 ((2447626j,0s,0n),+0s,2299161j)>=>"Julie", #<Date: 1990-04-12 ((2447994j,0s,0n),+0s,2299161j)>=>"Madleen", #<Date: 1981-04-14 ((2444709j,0s,0n),+0s,2299161j)>=>"Björn H.", #<Date: 1987-04-17 ((2446903j,0s,0n),+0s,2299161j)>=>"Stephan M.", #<Date: 1989-04-29 ((2447646j,0s,0n),+0s,2299161j)>=>"Denise", #<Date: 1981-05-01 ((2444726j,0s,0n),+0s,2299161j)>=>"Antje", #<Date: 1984-05-01 ((2445822j,0s,0n),+0s,2299161j)>=>"Katja", #<Date: 1980-05-01 ((2444361j,0s,0n),+0s,2299161j)>=>"Kristina G.", #<Date: 1988-05-02 ((2447284j,0s,0n),+0s,2299161j)>=>"Simon", #<Date: 1988-05-07 ((2447289j,0s,0n),+0s,2299161j)>=>"Adam", #<Date: 1985-05-07 ((2446193j,0s,0n),+0s,2299161j)>=>"Dorit", #<Date: 1980-05-09 ((2444369j,0s,0n),+0s,2299161j)>=>"Britta", #<Date: 1967-05-19 ((2439630j,0s,0n),+0s,2299161j)>=>"Kati S.", #<Date: 1987-05-21 ((2446937j,0s,0n),+0s,2299161j)>=>"Anja G.", #<Date: 1972-05-24 ((2441462j,0s,0n),+0s,2299161j)>=>"Jörn", #<Date: 1989-05-25 ((2447672j,0s,0n),+0s,2299161j)>=>"Kadir", #<Date: 1984-06-04 ((2445856j,0s,0n),+0s,2299161j)>=>"Ralf", #<Date: 1988-06-21 ((2447334j,0s,0n),+0s,2299161j)>=>"Thomas E. K.", #<Date: 1988-06-24 ((2447337j,0s,0n),+0s,2299161j)>=>"Michi L.", #<Date: 1985-06-27 ((2446244j,0s,0n),+0s,2299161j)>=>"Olli F.", #<Date: 1989-07-03 ((2447711j,0s,0n),+0s,2299161j)>=>"Laura Boche", #<Date: 1983-07-03 ((2445519j,0s,0n),+0s,2299161j)>=>"Thomas Scheel", #<Date: 1974-07-10 ((2442239j,0s,0n),+0s,2299161j)>=>"Carsten", #<Date: 1994-07-12 ((2449546j,0s,0n),+0s,2299161j)>=>"Denise (Andres)", #<Date: 1989-07-15 ((2447723j,0s,0n),+0s,2299161j)>=>"Maks", #<Date: 1981-07-22 ((2444808j,0s,0n),+0s,2299161j)>=>"Flo", #<Date: 1984-07-24 ((2445906j,0s,0n),+0s,2299161j)>=>"Nicole Br.", #<Date: 1988-07-27 ((2447370j,0s,0n),+0s,2299161j)>=>"Olli R.", #<Date: 1987-07-27 ((2447004j,0s,0n),+0s,2299161j)>=>"Vicky", #<Date: 1988-08-03 ((2447377j,0s,0n),+0s,2299161j)>=>"Tom", #<Date: 1987-08-04 ((2447012j,0s,0n),+0s,2299161j)>=>"Elisa", #<Date: 2010-08-06 ((2455415j,0s,0n),+0s,2299161j)>=>"Eric", #<Date: 1980-08-10 ((2444462j,0s,0n),+0s,2299161j)>=>"Nicole Be.", #<Date: 1987-08-11 ((2447019j,0s,0n),+0s,2299161j)>=>"Jana", #<Date: 1988-08-20 ((2447394j,0s,0n),+0s,2299161j)>=>"Olli Loose", #<Date: 1960-08-25 ((2437172j,0s,0n),+0s,2299161j)>=>"Carla", #<Date: 1950-08-31 ((2433525j,0s,0n),+0s,2299161j)>=>"Rainer", #<Date: 1987-09-23 ((2447062j,0s,0n),+0s,2299161j)>=>"Tobi H.", #<Date: 1985-09-29 ((2446338j,0s,0n),+0s,2299161j)>=>"Matthias", #<Date: 1987-10-04 ((2447073j,0s,0n),+0s,2299161j)>=>"Mathias S.", #<Date: 1988-10-04 ((2447439j,0s,0n),+0s,2299161j)>=>"Judith", #<Date: 1981-10-10 ((2444888j,0s,0n),+0s,2299161j)>=>"Marcus", #<Date: 1987-10-11 ((2447080j,0s,0n),+0s,2299161j)>=>"Nhung", #<Date: 1956-10-18 ((2435765j,0s,0n),+0s,2299161j)>=>"Peter", #<Date: 2014-10-18 ((2456949j,0s,0n),+0s,2299161j)>=>"Johann", #<Date: 1984-10-20 ((2445994j,0s,0n),+0s,2299161j)>=>"Timo M.", #<Date: 1986-11-04 ((2446739j,0s,0n),+0s,2299161j)>=>"Semih", #<Date: 1987-11-12 ((2447112j,0s,0n),+0s,2299161j)>=>"Mirko", #<Date: 1985-11-16 ((2446386j,0s,0n),+0s,2299161j)>=>"Robin", #<Date: 1972-11-27 ((2441649j,0s,0n),+0s,2299161j)>=>"Sven B.", #<Date: 1987-12-03 ((2447133j,0s,0n),+0s,2299161j)>=>"Robert", #<Date: 1988-12-07 ((2447503j,0s,0n),+0s,2299161j)>=>"Andre"}');
         setBirthdayInterval('{#<Date: 1988-01-28 ((2447189j,0s,0n),+0s,2299161j)>=>"Tobi", #<Date: 1972-02-02 ((2441350j,0s,0n),+0s,2299161j)>=>"Jan", #<Date: 1980-02-05 ((2444275j,0s,0n),+0s,2299161j)>=>"Astrid", #<Date: 1984-02-07 ((2445738j,0s,0n),+0s,2299161j)>=>"Ben", #<Date: 1956-02-08 ((2435512j,0s,0n),+0s,2299161j)>=>"Bärbel", #<Date: 1991-03-01 ((2448317j,0s,0n),+0s,2299161j)>=>"Stefan G.", #<Date: 1958-03-07 ((2436270j,0s,0n),+0s,2299161j)>=>"Ina (Papa)", #<Date: 1958-03-12 ((2436275j,0s,0n),+0s,2299161j)>=>"Anton", #<Date: 1987-03-19 ((2446874j,0s,0n),+0s,2299161j)>=>"Nick", #<Date: 1988-03-28 ((2447249j,0s,0n),+0s,2299161j)>=>"Sven Peter", #<Date: 1989-04-09 ((2447626j,0s,0n),+0s,2299161j)>=>"Julie", #<Date: 1990-04-12 ((2447994j,0s,0n),+0s,2299161j)>=>"Madleen", #<Date: 1981-04-14 ((2444709j,0s,0n),+0s,2299161j)>=>"Björn H.", #<Date: 1987-04-17 ((2446903j,0s,0n),+0s,2299161j)>=>"Stephan M.", #<Date: 1989-04-29 ((2447646j,0s,0n),+0s,2299161j)>=>"Denise", #<Date: 1981-05-01 ((2444726j,0s,0n),+0s,2299161j)>=>"Antje", #<Date: 1984-05-01 ((2445822j,0s,0n),+0s,2299161j)>=>"Katja", #<Date: 1980-05-01 ((2444361j,0s,0n),+0s,2299161j)>=>"Kristina G.", #<Date: 1988-05-02 ((2447284j,0s,0n),+0s,2299161j)>=>"Simon", #<Date: 1988-05-07 ((2447289j,0s,0n),+0s,2299161j)>=>"Adam", #<Date: 1985-05-07 ((2446193j,0s,0n),+0s,2299161j)>=>"Dorit", #<Date: 1980-05-09 ((2444369j,0s,0n),+0s,2299161j)>=>"Britta", #<Date: 1967-05-19 ((2439630j,0s,0n),+0s,2299161j)>=>"Kati S.", #<Date: 1987-05-21 ((2446937j,0s,0n),+0s,2299161j)>=>"Anja G.", #<Date: 1972-05-24 ((2441462j,0s,0n),+0s,2299161j)>=>"Jörn", #<Date: 1989-05-25 ((2447672j,0s,0n),+0s,2299161j)>=>"Kadir", #<Date: 1984-06-04 ((2445856j,0s,0n),+0s,2299161j)>=>"Ralf", #<Date: 1988-06-21 ((2447334j,0s,0n),+0s,2299161j)>=>"Thomas E. K.", #<Date: 1988-06-24 ((2447337j,0s,0n),+0s,2299161j)>=>"Michi L.", #<Date: 1985-06-27 ((2446244j,0s,0n),+0s,2299161j)>=>"Olli F.", #<Date: 1989-07-03 ((2447711j,0s,0n),+0s,2299161j)>=>"Laura Boche", #<Date: 1983-07-03 ((2445519j,0s,0n),+0s,2299161j)>=>"Thomas Scheel", #<Date: 1974-07-10 ((2442239j,0s,0n),+0s,2299161j)>=>"Carsten", #<Date: 1994-07-12 ((2449546j,0s,0n),+0s,2299161j)>=>"Denise (Andres)", #<Date: 1989-07-15 ((2447723j,0s,0n),+0s,2299161j)>=>"Maks", #<Date: 1981-07-22 ((2444808j,0s,0n),+0s,2299161j)>=>"Flo", #<Date: 1984-07-24 ((2445906j,0s,0n),+0s,2299161j)>=>"Nicole Br.", #<Date: 1988-07-27 ((2447370j,0s,0n),+0s,2299161j)>=>"Olli R.", #<Date: 1987-07-27 ((2447004j,0s,0n),+0s,2299161j)>=>"Vicky", #<Date: 1988-08-03 ((2447377j,0s,0n),+0s,2299161j)>=>"Tom", #<Date: 1987-08-04 ((2447012j,0s,0n),+0s,2299161j)>=>"Elisa", #<Date: 2010-08-06 ((2455415j,0s,0n),+0s,2299161j)>=>"Eric", #<Date: 1980-08-10 ((2444462j,0s,0n),+0s,2299161j)>=>"Nicole Be.", #<Date: 1987-08-11 ((2447019j,0s,0n),+0s,2299161j)>=>"Jana", #<Date: 1988-08-20 ((2447394j,0s,0n),+0s,2299161j)>=>"Olli Loose", #<Date: 1960-08-25 ((2437172j,0s,0n),+0s,2299161j)>=>"Carla", #<Date: 1950-08-31 ((2433525j,0s,0n),+0s,2299161j)>=>"Rainer", #<Date: 1987-09-23 ((2447062j,0s,0n),+0s,2299161j)>=>"Tobi H.", #<Date: 1985-09-29 ((2446338j,0s,0n),+0s,2299161j)>=>"Matthias", #<Date: 1987-10-04 ((2447073j,0s,0n),+0s,2299161j)>=>"Mathias S.", #<Date: 1988-10-04 ((2447439j,0s,0n),+0s,2299161j)>=>"Judith", #<Date: 1981-10-10 ((2444888j,0s,0n),+0s,2299161j)>=>"Marcus", #<Date: 1987-10-11 ((2447080j,0s,0n),+0s,2299161j)>=>"Nhung", #<Date: 1956-10-18 ((2435765j,0s,0n),+0s,2299161j)>=>"Peter", #<Date: 2014-10-18 ((2456949j,0s,0n),+0s,2299161j)>=>"Johann", #<Date: 1984-10-20 ((2445994j,0s,0n),+0s,2299161j)>=>"Timo M.", #<Date: 1986-11-04 ((2446739j,0s,0n),+0s,2299161j)>=>"Semih", #<Date: 1987-11-12 ((2447112j,0s,0n),+0s,2299161j)>=>"Mirko", #<Date: 1985-11-16 ((2446386j,0s,0n),+0s,2299161j)>=>"Robin", #<Date: 1972-11-27 ((2441649j,0s,0n),+0s,2299161j)>=>"Sven B.", #<Date: 1987-12-03 ((2447133j,0s,0n),+0s,2299161j)>=>"Robert", #<Date: 1988-12-07 ((2447503j,0s,0n),+0s,2299161j)>=>"Andre"}');
 
-        getCurrentTrains(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
-        setTrainInterval(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
+        //getCurrentTrains(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
+        //setTrainInterval(departureStation, arrivalStation, searchedCity, departureStationId, searchedTrainStations, compensationTrainId, compensationTrainName);
 
         setCurrentDateTime();
         setCurrentDateTimeInterval();
@@ -129,144 +108,135 @@
           <p><span class="current-time"></span> <span class="current-date"></span></p>
         </div>
       </div>
-      <div class="row margin-bottom">
+      <div class="row">
         <div class="col-md-7 no-padding-left">
-          <div class="train-container border-radius">
-            <div class="row">
-              <div class="col-md-2 no-padding-right">
-                <img class="small-margin-left" src="images/icons/24/003-transport-1.png"/>
-              </div>
-              <div class="col-md-8 no-padding-left">
-                <p><b>Zugverbindungen:</b> <span class="startStation">Berlin</span><span class="arrow small-margin-left glyphicon glyphicon-arrow-right"></span><span class="endStation small-margin-left">Wolfsburg</span></p>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="local-train-container border-radius">
+                <div class="row">
+                  <div class="col-md-2 no-padding-right">
+                    <img class="small-margin-left" src="images/icons/24/004-transport.png"/>
+                  </div>
+                  <div class="col-md-8 no-padding-left">
+                    <p><b>S-Bahn-Verbindungen: <span class="localTrainName"></span></b></p>
+                  </div>
+                </div>
+                <div class="local-train-container-content">
+                </div>
               </div>
             </div>
-            <div class="train-details"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+
+              
+              
+              
+              <!--<div class="col-md-1"></div>-->
+              
+              
+                <div class="weather-container border-radius margin-top Berlin">
+                  <div class="row">
+                    <div class="col-md-7">
+                      <p><b>Berlin</b></p>
+                      <div class="row">
+                        <div class="col-md-5">
+                          <img class="center-block weatherCurrentImg" src="images/icons/64/007-weather-1.png"/>
+                        </div>
+                        <div class="col-md-4">
+                          <p class="text-left weather-font currentTemp"/>
+                        </div>
+                      </div>
+                      <div class="row margin-top">
+                        <div class="col-md-4">
+                          <p class="text-center"><span class="currentTempMin"></span><span class="big-font currentTempMax"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                          <p class="text-left currentWeather"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-5 border-left-side">
+                      <div class="row weather-forecast-line">
+                        <div class="col-md-5">
+                          <p>Morgen</p>
+                          <img class="weatherTomorrowImg" src="images/icons/24/01d.png"/>
+                        </div>
+                        <div class="col-md-7 weather-forecast-pull-down">
+                          <p><span class="weatherTomorrowTempMin"></span><span class="weatherTomorrowTempMax"></span></p>
+                        </div>
+                      </div>
+                      <hr class="small-margin-top">
+                      <div class="row weather-forecast-line">
+                        <div class="col-md-5">
+                          <p class="weatherIn2DaysDate"></p>
+                          <img class="weatherIn2DaysImg" src="images/icons/24/01d.png"/>
+                        </div>
+                        <div class="col-md-7 pull-down">
+                          <p><span class="weatherIn2DaysTempMin"></span><span class="weatherIn2DaysTempMax"></span></p>
+                        </div>
+                      </div>
+                      <hr class="small-margin-top">
+                      <div class="row weather-forecast-line">
+                        <div class="col-md-5">
+                          <p class="weatherIn3DaysDate"></p>
+                          <img class="weatherIn3DaysImg" src="images/icons/24/01d.png"/>
+                        </div>
+                        <div class="col-md-7 pull-down">
+                          <p><span class="weatherIn3DaysTempMin"></span><span class="weatherIn3DaysTempMax"></span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              
+            
+              
+              
+              
+            
+            </div>
           </div>
         </div>
         <div class="col-md-5 no-padding-left no-padding-right">
-          <div class="border-radius birthday-container">
-            <div class="row">
-              <div class="col-md-2">
-                <img class="small-margin-left" src="images/icons/24/001-present.png"/>
-              </div>
-              <div class="col-md-8">
-                <p class="currentBirthday"><span class="birthday-start-text"></span><span class="birthday-people"></span><span class="birthday-end-text"></span></p>
-              </div>
-            </div>
-          </div>
-          <div class="border-radius todo-container margin-top">
-            <div class="row">
-              <div class="col-md-2">
-                <img class="small-margin-left" src="images/icons/24/checklist.png"/>
-              </div>
-              <div class="col-md-8">
-                <p>Heutigen ToDos</p>
-              </div>
-            </div>
-            <div class="todo-container-details">
-              <div class="row todos">
-                <div class="col-md-12">
-                  <p><b>Heute gibt es keine ToDos</b></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-      <div class="col-md-6 no-padding-left">
-        <div class="local-train-container border-radius">
-            <div class="row">
-                <div class="col-md-2 no-padding-right">
-                    <img class="small-margin-left" src="images/icons/24/004-transport.png"/>
-                </div>
-                <div class="col-md-8 no-padding-left">
-                    <p><b>S-Bahn-Verbindungen: <span class="localTrainName"></span></b></p>
-                </div>
-            </div>
-            <div class="local-train-container-content">
-            </div>
-        </div>
-      </div>
-
-      
-        
-        
-        <!--<div class="col-md-1"></div>-->
-        
-        
-        <div  class="col-md-3 no-padding-left " >
-          <div class="weather-container border-radius Berlin">
-            <div class="row">
-              <div class="col-md-12">
-                <p><b>Berlin</b></p>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="border-radius birthday-container">
                 <div class="row">
-                  <div class="col-md-5">
-                    <img class="center-block weatherCurrentImg" src="images/icons/64/007-weather-1.png"/>
+                  <div class="col-md-2">
+                    <img class="small-margin-left" src="images/icons/24/001-present.png"/>
                   </div>
-                  <div class="col-md-4">
-                    <p class="text-left weather-font currentTemp"/>
-                  </div>
-                </div>
-                <div class="row margin-top fixed-height">
-                  <div class="col-md-4">
-                    <p class="text-center"><span class="currentTempMin"></span><span class="big-font currentTempMax"></span></p>
-                  </div>
-                  <div class="col-md-6">
-                    <p class="text-left currentWeather"/>
+                  <div class="col-md-8">
+                    <p class="currentBirthday"><span class="birthday-start-text"></span><span class="birthday-people"></span><span class="birthday-end-text"></span></p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-        </div>
-        
-      
-      
-        
-        
-        
-        <div  class="col-md-3 no-padding-left  no-padding-right " >
-          <div class="weather-container border-radius Wolfsburg">
-            <div class="row">
-              <div class="col-md-12">
-                <p><b>Wolfsburg</b></p>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="border-radius todo-container margin-top">
                 <div class="row">
-                  <div class="col-md-5">
-                    <img class="center-block weatherCurrentImg" src="images/icons/64/007-weather-1.png"/>
+                  <div class="col-md-2">
+                    <img class="small-margin-left" src="images/icons/24/checklist.png"/>
                   </div>
-                  <div class="col-md-4">
-                    <p class="text-left weather-font currentTemp"/>
+                  <div class="col-md-8">
+                    <p>Heutigen ToDos</p>
                   </div>
                 </div>
-                <div class="row margin-top fixed-height">
-                  <div class="col-md-4">
-                    <p class="text-center"><span class="currentTempMin"></span><span class="big-font currentTempMax"></span></p>
-                  </div>
-                  <div class="col-md-6">
-                    <p class="text-left currentWeather"/>
+                <div class="todo-container-details">
+                  <div class="row todos">
+                    <div class="col-md-12">
+                      <p><b>Heute gibt es keine ToDos</b></p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-        
-      
       </div>
-      
-      
-        
-        
-        <!--<div class="col-md-1"></div>-->
-        
-        
-      
-      
-
     </div>
     </div>
 
