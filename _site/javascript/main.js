@@ -301,7 +301,7 @@ function getCurrentLocalTrains(localStationName, localStationId, stationsBetween
     timeInFuture = parseInt(timeInFuture);
     trainCounter = parseInt(trainCounter);
     $.ajax({
-        url: 'http://localhost/currentTrains.php?id='+localStationId,
+        url: '/currentTrains.php?id='+localStationId,
         success: function(data) {
             var trains = getLocalTrains(data, stationsBetween);
             $('.local-train-container-content').empty();
@@ -430,7 +430,7 @@ function getCurrentTrainsOfCompensationTrain(compensationTrainId, compensationTr
     $('.train-container').append(infoContainer);
 
     $.ajax({
-        url: 'http://localhost/currentTrains.php?id='+compensationTrainId,
+        url: '/currentTrains.php?id='+compensationTrainId,
         success: function(data) {
             var trains = getTrains(data);
             if(trains.length > 0){
