@@ -594,7 +594,7 @@ function getIdOfTrain(children){
             for(var j=0; j<child.children.length; j++){
                 if(child.children[j].localName === 'a'){
                     var linkChild = child.children[j];
-                    if(linkChild.href.indexOf('localhost') > -1){
+                    if(linkChild.href.indexOf('reiseauskunft') == -1){
                         return linkChild.innerHTML;
                     }
                 }
