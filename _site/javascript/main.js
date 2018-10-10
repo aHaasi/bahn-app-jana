@@ -595,6 +595,7 @@ function getIdOfTrain(children){
                 if(child.children[j].localName === 'a'){
                     var linkChild = child.children[j];
                     if(linkChild.href.indexOf('localhost') > -1){
+                        console.log('------found train', linkChild.innerHTML);
                         return linkChild.innerHTML;
                     }
                 }
@@ -892,7 +893,12 @@ function removeDelay(str){
  * @returns {XML|string|void}
  */
 function removeReturnCharacter(str){
-    return str.replace(/\r?\n|\r/g, "");
+    if(str){
+        return str.replace(/\r?\n|\r/g, "");
+    }else{
+        return null;
+    }
+
 }
 
 /**
