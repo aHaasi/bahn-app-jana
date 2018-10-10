@@ -595,7 +595,6 @@ function getIdOfTrain(children){
                 if(child.children[j].localName === 'a'){
                     var linkChild = child.children[j];
                     if(linkChild.href.indexOf('localhost') > -1){
-                        console.log('------found train', linkChild.innerHTML);
                         return linkChild.innerHTML;
                     }
                 }
